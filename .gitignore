@@ -1,0 +1,6 @@
+# Exclude everything except negated files
+# This may change in the future but for now this file is setup as a whitelist.
+# To negate the exclusion for a file, put an "!" in front of the whole path (path relative to this file)
+
+/*
+!/README.md
