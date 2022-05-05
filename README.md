@@ -1,5 +1,5 @@
 # BEM-FMM-GUI
-WPI Summer 2022 E1 Term - GUI Design for Professor Makarov
+### WPI Summer 2022 E1 Term - GUI Design for Professor Makarov
 
 ---
 
@@ -15,5 +15,5 @@ For commits and branches, the current plan is to (after finalizing filesystem st
 
 ---
 
-#####Also:
+#### Also:
 See Discussions tab for more misc info (in announcements). I will be posting there every now and then.
