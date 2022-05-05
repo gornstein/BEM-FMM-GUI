@@ -4,9 +4,10 @@
 ---
 
 ### Branches:
-- dev: Set as default branch for commits. Used for testing/developing working code. Is only merged to prod when everything is totally stable.
-- prod: ONLY for totally stable, working code.
+- prod: Default branch, ONLY for totally stable, working code. _**Do Not**_ commit directly to this branch.
+- dev: Used for testing/developing working code. Is only merged to prod when everything is totally stable.
 
+---
 
 ### Updates:
 - [ ] \(Finalize filesystem structure and naming scheme) 
