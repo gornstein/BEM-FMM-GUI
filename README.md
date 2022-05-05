@@ -3,6 +3,11 @@
 
 ---
 
+### Branches:
+- dev: Set as default branch for commits. Used for testing/developing working code. Is only merged to prod when everything is totally stable.
+- prod: ONLY for totally stable, working code.
+
+
 ### Updates:
 - [ ] \(Finalize filesystem structure and naming scheme) 
 I will create another post when we finalize the filesystem structure and naming convention, it is almost finished.
