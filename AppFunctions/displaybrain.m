@@ -5,8 +5,27 @@ load('tissuelist');
 load('CombinedMesh.mat', 't', 'Indicator');
 
 
-tissue_to_plot = 'GM'; %swap to skin
+%Display different head compartments based on the chosen button
+
+if app.SkinButton_2.Value == 1
+    tissue_to_plot = 'SKIN';
+elseif app.BoneButton.Value == 1
+    tissue_to_plot = 'BONE';
+elseif app.CSFButton.Value == 1
+    tissue_to_plot = 'CSF';
+elseif app.GMButton.Value == 1
+    tissue_to_plot = 'GM';
+elseif app.WMButton.Value == 1
+    tissue_to_plot = 'WM';
+elseif app.VentriclesButton.Value == 1
+    tissue_to_plot = 'VENTRICLES';
+elseif app.EyesButton.Value == 1
+    tissue_to_plot = 'EYES';
+end
+
+
 t0 = t(Indicator==find(strcmp(tissue, tissue_to_plot)), :);    % (change indicator if necessary: 1-skin, 2-skull, etc.)
+
 
 %Creates str
 %graphics stuff
