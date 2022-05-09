@@ -1,2 +1,9 @@
+<Alton changes>
 - ChargeEngine/bemf1_graphics_coil_CAD.m : Modified to display to the UIAxes and take app as the first param 
-- ChargeEngine/bemf2_graphics_base.m : Modified to display to the UIAxes and take app as the first param 
+- ChargeEngine/bemf2_graphics_base.m : Modified to display to the UIAxes and take app as the first param
+</Alton changes>
+
+<Kseniia changes>
+- GUI.mlapp : Modified to refine appearance of GUI / added colors and new functions
+- displaybrain.m : Modified to display different head compartments based on the button chosen
+</Kseniia changes>
