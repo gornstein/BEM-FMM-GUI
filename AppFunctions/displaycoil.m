@@ -20,20 +20,12 @@ end
 
 if (strcmp(app.VectorfromcoilSwitch.Value, 'On'))
 %   display the vector showing the coil direction
-<<<<<<< HEAD
     displaycoilvector(app, rotMatrix, transMatrix);
-=======
-displaycoilvector(app, rotMatrix, transMatrix);
->>>>>>> dev
 end
 
 if (strcmp(app.VectortocoilSwitch.Value, 'On'))
 %   display the vector from the origin to the coil's translation location
-<<<<<<< HEAD
     displayvectortocoil(app, transMatrix);
-=======
-displayvectortocoil(app, transMatrix);
->>>>>>> dev
 end
 
 %Makarov's function used to display the coil
