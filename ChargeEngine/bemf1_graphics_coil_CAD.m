@@ -16,6 +16,5 @@ function [ ] = bemf1_graphics_coil_CAD(app, P, t, flag)
         p.EdgeColor = 'none';
         p.FaceAlpha = 0.20;      
     end
-    xlabel(app.UIAxes, 'x, m'); ylabel(app.UIAxes, 'y, m'); zlabel(app.UIAxes, 'z, m');  
 end
 
