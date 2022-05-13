@@ -13,14 +13,20 @@ rotMatrix = [app.MatrixField11.Value, app.MatrixField12.Value, app.MatrixField13
 %   1x3 Translation Matrix
 transMatrix = [app.MatrixField14.Value, app.MatrixField24.Value, app.MatrixField34.Value];
 
+%   Scale Matrix (m to cm)
+scaleMatrix = [100 0 0;
+    0 100 0;
+    0 0 100];
+
 %   Apply the rotations and transformation to the coil
 for j = 1:size(CoilP,1)
-    Coil.P(j,:) = CoilP(j,:) * rotMatrix + transMatrix;
+    transformedPoint = scaleMatrix * rotMatrix * CoilP(j,:)' + transMatrix';
+    Coil.P(j,:) = transformedPoint';
 end
 
 if (strcmp(app.VectorfromcoilSwitch.Value, 'On'))
 %   display the vector showing the coil direction
-    displaycoilvector(app, rotMatrix, transMatrix);
+    displaycoilnormalvector(app, rotMatrix, transMatrix);
 end
 
 if (strcmp(app.VectortocoilSwitch.Value, 'On'))

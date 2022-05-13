@@ -1,4 +1,4 @@
-function [] = displaycoilvector(app, rotationMatrix, translationMatrix)
+function [] = displaycoilnormalvector(app, rotationMatrix, translationMatrix)
 
     %   Make the vector length be the length from the origin (arbitrary)
     magnitude = sqrt(translationMatrix(1)^2 + translationMatrix(2)^2 + translationMatrix(3)^2);
@@ -8,8 +8,11 @@ function [] = displaycoilvector(app, rotationMatrix, translationMatrix)
     vectorStart = [0, 0, 0];
 
     %   Translate points
-    vectorEnd = vectorEnd * rotationMatrix + translationMatrix;
-    vectorStart = vectorStart * rotationMatrix + translationMatrix;
+    vectorEnd = rotationMatrix * vectorEnd' + translationMatrix';
+    vectorStart = rotationMatrix * vectorStart' + translationMatrix';
+
+    vectorEnd = vectorEnd';
+    vectorStart = vectorStart';
 
     %   Plot the vector
     plot3(app.UIAxes, [vectorStart(1), vectorEnd(1)], [vectorStart(2), vectorEnd(2)], [vectorStart(3), vectorEnd(3)], Color='blue', LineWidth=3);
