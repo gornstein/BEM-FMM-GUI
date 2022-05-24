@@ -4,7 +4,7 @@ function [] = displaycoilnormalvector(app, rotationMatrix, translationMatrix)
     magnitude = sqrt(translationMatrix(1)^2 + translationMatrix(2)^2 + translationMatrix(3)^2);
 
     %   Set the points for the vector
-    vectorEnd = [0, 0, magnitude];
+    vectorEnd = [0, 0, -magnitude];
     vectorStart = [0, 0, 0];
 
     %   Translate points
