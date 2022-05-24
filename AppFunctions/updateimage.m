@@ -16,7 +16,6 @@ app.MatrixField42.Value = round(app.MatrixField42.Value, 10);
 app.MatrixField43.Value = round(app.MatrixField43.Value, 10);
 
 cla(app.UIAxes); %clears the axis
-hold(app.UIAxes, "on"); %ensures that both will be plotted
 
 %displays the brain
 displaybrain(app);
