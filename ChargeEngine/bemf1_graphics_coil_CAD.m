@@ -11,12 +11,10 @@ function [ ] = bemf1_graphics_coil_CAD(app, P, t, flag)
         p.FaceAlpha = 1.0;
         daspect([1 1 1]);
         camlight('headlight'); lighting flat; 
-        disp('If is true')
     else
         p.FaceColor = [1 0.155 0.155];  
         p.EdgeColor = 'none';
         p.FaceAlpha = 1;      
-        disp('If is false')
     end
 end
 
