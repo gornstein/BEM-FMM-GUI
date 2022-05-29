@@ -15,7 +15,7 @@ app.MatrixField41.Value = round(app.MatrixField41.Value, 10);
 app.MatrixField42.Value = round(app.MatrixField42.Value, 10);
 app.MatrixField43.Value = round(app.MatrixField43.Value, 10);
 
-cla(app.UIAxes); %clears the axis
+cla(app.CoilDisplay); %clears the axis
 
 %displays the brain
 displaybrain(app);

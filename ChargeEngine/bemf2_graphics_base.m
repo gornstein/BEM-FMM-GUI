@@ -4,11 +4,11 @@ function [] = bemf2_graphics_base(app, P, t, c)
 
 %   Copyright SNM 2017-2020
 
-    p = patch(app.UIAxes, 'vertices', P, 'faces', t);
+    p = patch(app.CoilDisplay, 'vertices', P, 'faces', t);
     p.FaceColor = c.FaceColor;
     p.EdgeColor = c.EdgeColor;
     p.FaceAlpha = c.FaceAlpha;
-    daspect(app.UIAxes, [1 1 1]);          
+    daspect(app.CoilDisplay, [1 1 1]);          
 	
     NumberOfTrianglesInShell = size(t, 1);
     edges = meshconnee(t);

@@ -15,6 +15,6 @@ function [] = displaycoilnormalvector(app, rotationMatrix, translationMatrix)
     vectorStart = vectorStart';
 
     %   Plot the vector
-    plot3(app.UIAxes, [vectorStart(1), vectorEnd(1)], [vectorStart(2), vectorEnd(2)], [vectorStart(3), vectorEnd(3)], Color='blue', LineWidth=3);
+    plot3(app.CoilDisplay, [vectorStart(1), vectorEnd(1)], [vectorStart(2), vectorEnd(2)], [vectorStart(3), vectorEnd(3)], Color='blue', LineWidth=3);
 
 end

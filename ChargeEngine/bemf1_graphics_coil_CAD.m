@@ -4,7 +4,7 @@ function [ ] = bemf1_graphics_coil_CAD(app, P, t, flag)
 %
 %   Copyright SNM 2017-2020
 
-    p = patch(app.UIAxes, 'vertices', P, 'faces', t);
+    p = patch(app.CoilDisplay, 'vertices', P, 'faces', t);
     if flag == 0    %   non-transparent coil
         p.FaceColor = [1 0.75 0.65]; % [0.72 0.45 0.2];  
         p.EdgeColor = 'none';
