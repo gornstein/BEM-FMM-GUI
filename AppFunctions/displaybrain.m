@@ -5,22 +5,23 @@ load('tissuelist');
 load('CombinedMesh.mat', 't', 'Indicator');
 
 
-%Display different head compartments based on the chosen button
+%Display different head compartments based on the chosen compartment
 
-if app.SkinButton_2.Value == 1
-    tissue_to_plot = 'SKIN';
-elseif app.BoneButton.Value == 1
-    tissue_to_plot = 'BONE';
-elseif app.CSFButton.Value == 1
-    tissue_to_plot = 'CSF';
-elseif app.GMButton.Value == 1
-    tissue_to_plot = 'GM';
-elseif app.WMButton.Value == 1
-    tissue_to_plot = 'WM';
-elseif app.VentriclesButton.Value == 1
-    tissue_to_plot = 'VENTRICLES';
-elseif app.EyesButton.Value == 1
-    tissue_to_plot = 'EYES';
+switch app.HeadCompartmentsDropDown.Value
+    case 'Skin'
+        tissue_to_plot = 'SKIN';
+    case 'Bone'
+        tissue_to_plot = 'BONE';
+    case 'CSF'
+        tissue_to_plot = 'CSF';
+    case 'GM'
+        tissue_to_plot = 'GM';
+    case 'WM'
+        tissue_to_plot = 'WM';
+    case 'Ventricles'
+        tissue_to_plot = 'VENTRICLES';
+    case 'Eyes'
+        tissue_to_plot = 'EYES';
 end
 
 

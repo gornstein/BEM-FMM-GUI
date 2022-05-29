@@ -7,6 +7,8 @@ load('CombinedMesh.mat', 't', 'Indicator');
 
 %Display different head compartments based on the chosen button
 
+switch ap
+
 if app.SkinButton_2.Value == 1
     tissue_to_plot = 'SKIN';
 elseif app.BoneButton.Value == 1
@@ -30,9 +32,6 @@ t0 = t(Indicator==find(strcmp(tissue, tissue_to_plot)), :);    % (change indicat
 %Creates str
 %graphics stuff
 str.EdgeColor = 'none'; str.FaceColor = [1 0.75 0.65]; str.FaceAlpha = 1.0;
-
-%   Scales the brain's points
-for 
 
 %final plotting
 bemf2_graphics_base(app, app.P, t0, str);
