@@ -17,9 +17,12 @@ app.MatrixField43.Value = round(app.MatrixField43.Value, 10);
 
 cla(app.CoilDisplay); %clears the axis
 
-%displays the brain
+%   displays the brain
 displaybrain(app);
 
-%Displays the coil
+%   displays the coil
 displaycoil(app);
+
+%   displays the plane cross-sections
+displayplanes(app);
 end
