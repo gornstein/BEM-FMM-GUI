@@ -1,6 +1,12 @@
 function displaycoil(app)
 %%  The function called to display the coil
 
+%Clears prior coil image data
+delete(app.coilpatch);
+delete(app.tocoilline);
+delete(app.fromcoilline);
+delete(app.coillight);
+
 %Loads Coil
 Coil = app.coil;
 CoilP = Coil.P;
