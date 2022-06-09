@@ -9,8 +9,9 @@
 %   conductor and scales by default as 1/M.  
 
 %   Copyright SNM 2020
-clear all; %#ok<CLALL>
 
+clear all; %#ok<CLALL>
+s = pwd; addpath(strcat(s(1:end-5), '\Engine'));
 
 % Coil geometry definitions
 IN          = 0.0254;       % inch to meter conversion factor

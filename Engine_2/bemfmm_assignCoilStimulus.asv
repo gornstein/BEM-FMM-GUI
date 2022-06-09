@@ -1,0 +1,5 @@
+function coil = bemfmm_assignCoilStimulus(coil, coilCurrent, coildIdt)
+
+    coil.co
+
+end

@@ -1,7 +1,0 @@
->Skull : 120111_bone_headreco.mat : 0.01 : Skin
->CSF : 120111_csf_headreco.mat : 1.654 : Skull
->Eyes : 120111_eyes_headreco.mat : 1.654 : WM
->GM : 120111_gm_headreco.mat : 0.275 : CSF
->Skin : 120111_skin_headreco.mat : 0.465 : FreeSpace
->Ventricles : 120111_ventricles_headreco.mat : 1.654 : WM
->WM : 120111_wm_headreco.mat : 0.126 : GM

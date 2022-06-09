@@ -2,7 +2,13 @@
 %   over a surface (coronal plane) due to a coil via the plain FMM method
 %
 %   Copyright SNM 2018-2020
+
 clear all; %#ok<CLALL>
+if ~isunix
+    s = pwd; addpath(strcat(s(1:end-5), '\Engine'));
+else
+    s = pwd; addpath(strcat(s(1:end-5), '/Engine'));
+end
 
 %  Load coil data
 load coil; load coilCAD;

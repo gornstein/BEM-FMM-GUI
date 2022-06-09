@@ -8,7 +8,13 @@
 %   conductor current through any cross-section is 1 A.
 %
 %   Copyright SNM 2018-2020
+
 clear all; %#ok<CLALL>
+if ~isunix
+    s = pwd; addpath(strcat(s(1:end-5), '\Engine'));
+else
+    s = pwd; addpath(strcat(s(1:end-5), '/Engine'));
+end
 
 strcoil.Swire       = [];
 strcoil.Ewire       = [];

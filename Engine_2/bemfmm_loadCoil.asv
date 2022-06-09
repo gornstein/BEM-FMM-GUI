@@ -1,0 +1,22 @@
+function coil = bemfmm_loadCoil(fname)
+    % Load coil
+    coiltemp = load(fname);
+  
+    % These fields are used to reset the coil
+    coil.strcoil_base = coiltemp.strcoil;
+    coil.coilmesh_base = coiltemp.coilMesh;
+    
+    % These fields will be updated by functions like bemfmm_positionCoil
+    coil.strcoil = coil.strcoil;
+    coil.coilmesh = coiltemp.coilMesh;
+    
+    % Positioning information
+    coil.origin = [0 0 0];
+    coil.centerlineDirection = [0 0 1];
+    coil.centerlineTheta = 0;
+    
+    % Stimulus information
+    coil.I0 = 0;
+    coil.dIdt = 0;
+    
+end

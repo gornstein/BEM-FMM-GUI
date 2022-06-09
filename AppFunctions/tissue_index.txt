@@ -1,7 +1,0 @@
->_ : 120111_bone_headreco.mat : 0 : _
->_ : 120111_csf_headreco.mat : 0 : _
->_ : 120111_eyes_headreco.mat : 0 : _
->_ : 120111_gm_headreco.mat : 0 : _
->_ : 120111_skin_headreco.mat : 0 : _
->_ : 120111_ventricles_headreco.mat : 0 : _
->_ : 120111_wm_headreco.mat : 0 : _

@@ -9,7 +9,13 @@
 %   cross-section is 1 A.
 %
 %   Copyright SNM 2018-2020
+
 clear all; %#ok<CLALL>
+if ~isunix
+    s = pwd; addpath(strcat(s(1:end-5), '\Engine'));
+else
+    s = pwd; addpath(strcat(s(1:end-5), '/Engine'));
+end
 
 %   The coil includes one single conductor in the form of a straight segment. 
 %   The conductor centerline model is given first

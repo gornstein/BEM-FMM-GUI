@@ -9,7 +9,13 @@
 %   cross-section is 1 A.
 %
 %   Copyright SNM 2018-2020
+
 clear all; %#ok<CLALL>
+if ~isunix
+    s = pwd; addpath(strcat(s(1:end-5), '\Engine'));
+else
+    s = pwd; addpath(strcat(s(1:end-5), '/Engine'));
+end
 
 %   The figure-eight coil includes elliptical turns/loops. The coil axis is
 %   the z-axis. We construct one part of the coil first.
