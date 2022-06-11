@@ -11,7 +11,7 @@
 %
 %   Copyright SNM/MD 2018-2020
 
-clear all; %#ok<CLALL>
+%clear all; %#ok<CLALL>
 if ~isunix
     s = pwd; addpath(strcat(s(1:end-5), '\Engine'));
 else
@@ -72,9 +72,9 @@ P          = [P; Pup];
 P(:, 3)    = P(:, 3) - min(P(:, 3)); 
 
 %   Display CAD and wire models
-bemf1_graphics_coil_CAD(P, t, 0);
+%bemf1_graphics_coil_CAD(P, t, 0);
 %bemf1_graphics_coil_wire(strcoil, [0 1 0]); 
-view(-4, 24);
+%view(-4, 24);
  
 save('coil', 'strcoil');
 save('coilCAD', 'P', 't', 'tind');  %   optional, slow
