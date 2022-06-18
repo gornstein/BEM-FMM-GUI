@@ -9,23 +9,23 @@ function coil = bemfmm_positionCoil(coil, origin, axis, theta)
 
     % Reset the coil to baseline
     coil.strcoil = coil.strcoil_base;
-    coil.coilmesh = coil.coilmesh_base;
+    coil.coilCAD = coil.coilCAD_base;
     
     % First transformation: rotate the coil about its axis
-    coil.strcoil.Pwire = meshrotate2(coil.strcoil.PWire, coil.centerlineDirection_base, theta);
-    coil.coilmesh.P     = meshrotate2(coil.coilmesh.P, coil.centerlineDirection_base, theta);
+    coil.strcoil.Pwire = meshrotate2(coil.strcoil.Pwire, coil.centerlineDirection_base, theta);
+    coil.coilCAD.P     = meshrotate2(coil.coilCAD.P, coil.centerlineDirection_base, theta);
     
     % Second transformation: Tilt the coil to point along its new axis
-    coil.strcoil.PWire = meshrotete1(coil.strcoilPWire, axis(1), axis(2), axis(3));
-    coil.coilmesh.P     = meshrotate1(coil.coilmesh.P, axis(1), axis(2), axis(3));
+    coil.strcoil.Pwire = meshrotate1(coil.strcoil.Pwire, axis(1), axis(2), axis(3));
+    coil.coilCAD.P     = meshrotate1(coil.coilCAD.P, axis(1), axis(2), axis(3));
 
     % Third transformation: Translate the coil to its new origin
-    coil.strcoil.PWire = coil.strcoil.PWire + origin;
-    coil.coilmesh.P     = coil.coilmesh.P + origin;
-    
+    coil.strcoil.Pwire = coil.strcoil.Pwire + origin;
+    coil.coilCAD.P     = coil.coilCAD.P + origin;
     
     % Update metadata
     coil.origin = origin;
     coil.centerlineDirection = axis;
+    coil.centerlineTheta = theta;
     
 end

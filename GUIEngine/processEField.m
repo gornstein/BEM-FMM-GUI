@@ -21,10 +21,16 @@ model = bemfmm_assignDefaultModelConductivities(model, 0); % Kind of a placehold
 coil = bemfmm_loadCoil('someCoil.mat');
 
 % Position and orient coil
-coilOrigin = [app.MatrixField14.Value app.MatrixField24.Value app.MatrixField34.Value] *1e-2;  % Origin in meters
-coilAxis = [0.45 0 1]*1e-3;     % Dimensionless vector describing coil tilt
-coilTheta = 0;                  % Angle in radians describing coil rotation about axis
-coil = bemfmm_positionCoil(coil, coilOrigin, coilAxis, coilTheta);
+transMatrix = [app.MatrixField11, app.MatrixField12, app.MatrixField13, app.MatrixField14;
+    app.MatrixField21, app.MatrixField22, app.MatrixField23, app.MatrixField24;
+    app.MatrixField31, app.MatrixField32, app.MatrixField33, app.MatrixField34;
+    app.MatrixField41, app.MatrixField42, app.MatrixField43, app.MatrixField44];
+coil = bemfmm_positionCoilT(app, transMatrix);
+
+% coilOrigin = [app.MatrixField14.Value app.MatrixField24.Value app.MatrixField34.Value] *1e-2;  % Origin in meters
+% coilAxis = [0 0 -1]*1e-3;     % Dimensionless vector describing coil tilt
+% coilTheta = 0;                  % Angle in radians describing coil rotation about axis
+% coil = bemfmm_positionCoil(coil, coilOrigin, coilAxis, coilTheta);
 
 % Assign coil stimulus
 coilCurrent = app.CoilCurrentAmperesEditField.Value;
