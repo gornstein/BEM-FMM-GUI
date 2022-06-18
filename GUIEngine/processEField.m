@@ -1,6 +1,11 @@
-function [] = processEField(app)
+function processEField(app)
 
-numthreads = app.numthreadsprocessing.Value;
+clc
+tic
+constants.eps0        = 8.85418782e-012;  %   Dielectric permittivity of vacuum(~air)
+constants.mu0         = 1.25663706e-006;  %   Magnetic permeability of vacuum(~air)
+
+numthreads = app.NumberOfThreadsForProcessingEditField.Value;
 tempPool = gcp('nocreate'); %   See if a parallel pool already exists
 if isempty(tempPool) || tempPool.NumWorkers ~= numthreads
     delete(gcp('nocreate'));
@@ -12,28 +17,32 @@ model = bemfmm_assembleModel('tissue_index.txt');
 model = bemfmm_computeModelIntegrals(model, 4);
 model = bemfmm_assignDefaultModelConductivities(model, 0); % Kind of a placeholder
 
-coil = app.coil;
-coil = load('coil.mat', 'strcoil');
-
+% Load and position the coil
+coil = bemfmm_loadCoil('someCoil.mat');
 
 % Position and orient coil
-coilOrigin = [app.MatrixField14.Value app.MatrixField24.Value app.MatrixField34.Value];  % Origin in meters
+coilOrigin = [app.MatrixField14.Value app.MatrixField24.Value app.MatrixField34.Value] *1e-2;  % Origin in meters
 coilAxis = [0.45 0 1]*1e-3;     % Dimensionless vector describing coil tilt
 coilTheta = 0;                  % Angle in radians describing coil rotation about axis
 coil = bemfmm_positionCoil(coil, coilOrigin, coilAxis, coilTheta);
 
 % Assign coil stimulus
-coilCurrent = app.CoilCurrentAmperesEditField.Value; 
+coilCurrent = app.CoilCurrentAmperesEditField.Value;
 coilFreq    = app.CoilFrequencyEditField.Value;
-coildIdt    = 2*pi*coilFreq*coilCurrent; 
+coildIdt    = 2*pi*coilFreq*coilCurrent; % 9.4e7 A/s
 coil = bemfmm_assignCoilStimulus(coil, coilCurrent, coildIdt);
 
+% Another placeholder
 solverOptions.prec      = 1e-3;     % FMM precision
 solverOptions.weight    = 1/2;      % Empirically-derived constant
 solverOptions.maxIter   = 25;       % Maximum permitted GMRES iterations
 solverOptions.relRes    = 1e-12;    % GMRES stop criterion
 solution = bemfmm_chargeEngineBase(model, coil, constants, solverOptions);
 
+disp('DONE');
+pause(1);
+% Define observation surface 1: coil centerline
+% parameters
 orig_temp = coil.origin; % named orig_temp to not confuse bem3_line_field_e
 dirline   = -coil.centerlineDirection;
 distance  = 0.1;                 % Distance (m) that the line should reach from the origin
@@ -60,7 +69,7 @@ EMagLine_sec = vecnorm(obs1.FieldESecondary, 2, 2);
 plot(obs1.argline*1000, EMagLine_sec, '--b', 'LineWidth', 2);
 
 disp(newline);
-pause;
+% pause;
 
 % Define observation surface 2: Plane
 % Parameters for plane
@@ -90,5 +99,5 @@ title('E-field (V/m), precomputed integrals');
 axis 'equal';
 xlim(lims.XLim);
 ylim(lims.YLim);
-end
 
+disp(['whole thing run in ' num2str(toc) ' s']);
