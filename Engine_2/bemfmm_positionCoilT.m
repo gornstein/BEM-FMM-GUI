@@ -20,7 +20,7 @@ function coil = bemfmm_positionCoilT(coil, transMatrix)
 
     end
 
-    for (i = 1:length(coil.strcoil.Pwire))
+    for i = 1:length(coil.strcoil.Pwire)
          
 
         currentPoint = coil.strcoil.Pwire(i,:)';
