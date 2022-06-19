@@ -3,8 +3,6 @@
 
 function coil = bemfmm_positionCoilT(coil, transMatrix)
 
-    axis = axis/norm(axis); % Ensure unit length
-
     % Reset the coil to baseline
     coil.strcoil = coil.strcoil_base;
     coil.coilCAD = coil.coilCAD_base;
