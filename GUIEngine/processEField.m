@@ -21,11 +21,11 @@ model = bemfmm_assignDefaultModelConductivities(model, 0); % Kind of a placehold
 coil = bemfmm_loadCoil('someCoil.mat');
 
 % Position and orient coil
-transMatrix = [app.MatrixField11, app.MatrixField12, app.MatrixField13, app.MatrixField14;
-    app.MatrixField21, app.MatrixField22, app.MatrixField23, app.MatrixField24;
-    app.MatrixField31, app.MatrixField32, app.MatrixField33, app.MatrixField34;
-    app.MatrixField41, app.MatrixField42, app.MatrixField43, app.MatrixField44];
-coil = bemfmm_positionCoilT(app, transMatrix);
+transMatrix = [app.MatrixField11.Value, app.MatrixField12.Value, app.MatrixField13.Value, app.MatrixField14.Value;
+    app.MatrixField21.Value, app.MatrixField22.Value, app.MatrixField23.Value, app.MatrixField24.Value;
+    app.MatrixField31.Value, app.MatrixField32.Value, app.MatrixField33.Value, app.MatrixField34.Value;
+    app.MatrixField41.Value, app.MatrixField42.Value, app.MatrixField43.Value, app.MatrixField44.Value];
+coil = bemfmm_positionCoilT(coil, transMatrix);
 
 % % Replaced by above positioning functioning
 % coilOrigin = [app.MatrixField14.Value app.MatrixField24.Value app.MatrixField34.Value] *1e-2;  % Origin in meters
@@ -34,7 +34,7 @@ coil = bemfmm_positionCoilT(app, transMatrix);
 % coil = bemfmm_positionCoil(coil, coilOrigin, coilAxis, coilTheta);
 
 % Assign coil stimulus
-coilCurrent = app.CoilCurrentAmperesEditField.Value;
+coilCurrent = app.CoilCurrentEditField.Value;
 coilFreq    = 3000; % coil frequency in hz
 coildIdt    = 2*pi*coilFreq*coilCurrent; % 9.4e7 A/s
 coil = bemfmm_assignCoilStimulus(coil, coilCurrent, coildIdt);
@@ -42,8 +42,8 @@ coil = bemfmm_assignCoilStimulus(coil, coilCurrent, coildIdt);
 % Another placeholder
 solverOptions.prec      = 1e-3;     % FMM precision
 solverOptions.weight    = 1/2;      % Empirically-derived constant
-solverOptions.maxIter   = app.MaxiumumIterationsEditField.Value;       % Maximum permitted GMRES iterations
-solverOptions.relRes    = app.MaximumResidualEditField.Value;    % GMRES stop criterion
+solverOptions.maxIter   = app.MaximumIterationsEditField.Value;       % Maximum permitted GMRES iterations
+solverOptions.relRes    = app.MinimumResidualEditField.Value;    % GMRES stop criterion
 solution = bemfmm_chargeEngineBase(model, coil, constants, solverOptions);
 
 disp('DONE');
