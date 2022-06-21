@@ -3,8 +3,8 @@ function displaycoil(app)
 
 %Clears prior coil image data
 delete(app.coilpatch);
-delete(app.tocoilline);
-delete(app.fromcoilline);
+delete(app.coilnormalline);
+delete(app.coilfieldline);
 delete(app.coillight);
 
 %Loads Coil
@@ -35,9 +35,9 @@ if (strcmp(app.VectorfromcoilSwitch.Value, 'On'))
     displaycoilnormalvector(app, rotMatrix, transMatrix);
 end
 
-if (strcmp(app.VectortocoilSwitch.Value, 'On'))
+if (strcmp(app.FieldVectorSwitch.Value, 'On'))
     %   display the vector from the origin to the coil's translation location
-    displayvectortocoil(app, transMatrix);
+    displaycoilfieldlines(app, rotMatrix,transMatrix);
 end
 
 %Makarov's function used to display the coil

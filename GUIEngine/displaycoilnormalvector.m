@@ -1,4 +1,4 @@
-function [] = displaycoilnormalvector(app, rotationMatrix, translationMatrix)
+function displaycoilnormalvector(app, rotationMatrix, translationMatrix)
 
     %   Make the vector length be the length from the origin (arbitrary)
     magnitude = sqrt(translationMatrix(1)^2 + translationMatrix(2)^2 + translationMatrix(3)^2);
@@ -15,6 +15,6 @@ function [] = displaycoilnormalvector(app, rotationMatrix, translationMatrix)
     vectorStart = vectorStart';
 
     %   Plot the vector
-    app.fromcoilline = plot3(app.CoilDisplay, [vectorStart(1), vectorEnd(1)], [vectorStart(2), vectorEnd(2)], [vectorStart(3), vectorEnd(3)], Color='blue', LineWidth=3);
+    app.coilnormalline = plot3(app.CoilDisplay, [vectorStart(1), vectorEnd(1)], [vectorStart(2), vectorEnd(2)], [vectorStart(3), vectorEnd(3)], Color='blue', LineWidth=3);
 
 end
