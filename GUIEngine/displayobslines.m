@@ -15,6 +15,6 @@ endingZCoord = startingZCoord + app.lines{app.selectedlineidx}{2}(3) * magnitude
 
 %   Plots the line if visability is set to true
 if (app.lines{app.selectedlineidx}{4})
-    app.lines{app.selectedlineidx}{5} = plot3(app.CoilDisplay, [endingXCoord, startingXCoord], [endingYCoord, startingYCoord], [endingZCoord, startingZCoord], Color='blue', LineWidth=2);
+    app.lines{app.selectedlineidx}{5} = plot3(app.CoilDisplay, [endingXCoord, startingXCoord], [endingYCoord, startingYCoord], [endingZCoord, startingZCoord], Color='magenta', LineWidth=4);
 end
 end

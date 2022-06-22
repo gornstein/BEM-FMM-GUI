@@ -4,9 +4,9 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
 
         %%  Defines the three planes
     %   Getting coords for field planes
-    X = app.planes{app.selectedplaneidx}{3}(1);  %   X-Coord of the plane's center
-    Y = app.planes{app.selectedplaneidx}{3}(2);  %   Y-Coord of the plane's center
-    Z = app.planes{app.selectedplaneidx}{3}(3);  %   Z-Coord of the plane's center
+    X = app.planes{app.selectedplaneidx}{3}(1);  %   X-Coord of the plane's center cm
+    Y = app.planes{app.selectedplaneidx}{3}(2);  %   Y-Coord of the plane's center cm
+    Z = app.planes{app.selectedplaneidx}{3}(3);  %   Z-Coord of the plane's center cm
 
     %%  Defines aspects for field planes
     delta = app.PlaneWidthcmEditField.Value;  %   half plane window, cm
@@ -55,8 +55,15 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
             brighten(app.CrossSectionDisplay, 0.3);
             bemplot_2D_modelIntersections_app(app.CrossSectionDisplay, model, obs); %   Check these things
 
+            % Set axis labels
             app.CrossSectionDisplay.XLabel.String = 'X (cm)';
             app.CrossSectionDisplay.YLabel.String = 'Y (cm)';
+
+            %Display the square crosssection
+            if(isfield(app.niftidisplaydata, 'fieldplane'))
+                delete(app.niftidisplaydata.fieldplane);
+            end
+            app.niftidisplaydata.fieldplane = rectangle(app.CrossSectionDisplay, 'Position', [(X-delta)*1e1, (Y-delta)*1e1, 2*delta*1e1, 2*delta*1e1], 'EdgeColor', 'cyan', 'LineWidth', 4);
 
 
         case 'xz'
@@ -73,8 +80,15 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
             brighten(app.CrossSectionDisplay, 0.3);
             bemplot_2D_modelIntersections_app(app.CrossSectionDisplay, model, obs); %   Check these things
 
+            % Set axis labels
             app.CrossSectionDisplay.XLabel.String = 'X (cm)';
             app.CrossSectionDisplay.YLabel.String = 'Z (cm)';
+
+            %Display the square crosssection
+            if(isfield(app.niftidisplaydata, 'fieldplane'))
+                delete(app.niftidisplaydata.fieldplane);
+            end
+            app.niftidisplaydata.fieldplane = rectangle(app.CrossSectionDisplay, 'Position', [(X-delta)*1e1, (Z-delta)*1e1, 2*delta*1e1, 2*delta*1e1], 'EdgeColor', 'cyan', 'LineWidth', 4);
 
 
         case 'yz'
@@ -91,10 +105,21 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
             brighten(app.CrossSectionDisplay, 0.3);
             bemplot_2D_modelIntersections_app(app.CrossSectionDisplay, model, obs); %   Check these things
 
+            % Set axis labels
             app.CrossSectionDisplay.XLabel.String = 'Y (cm)';
             app.CrossSectionDisplay.YLabel.String = 'Z (cm)';
 
+            %Display the square crosssection
+            if(isfield(app.niftidisplaydata, 'fieldplane'))
+                delete(app.niftidisplaydata.fieldplane);
+            end
+            app.niftidisplaydata.fieldplane = rectangle(app.CrossSectionDisplay, 'Position', [(Y-delta)*1e1, (Z-delta)*1e1, 2*delta*1e1, 2*delta*1e1], 'EdgeColor', 'cyan', 'LineWidth', 4);
+
     end
+    % Display the coil's centerline and intersection point
+    updatecoilnormaltocrosssectiondisplay(app);
+    % Display the user's point if it exists
+    updateuserpointcrosssectiondisplay(app);
     axis(app.CrossSectionDisplay, 'equal');
 
 end
