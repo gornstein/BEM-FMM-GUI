@@ -65,12 +65,18 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
                 end
             end
 
-            %displays the intersection point
+            % displays the intersection point
+            if (isfield(app.niftidisplaydata, 'centerlineintersection'))
+                delete(app.niftidisplaydata.centerlineintersection);
+            end
             if (~isempty(coilIntersection))
                 app.niftidisplaydata.centerlineintersection = plot(app.CrossSectionDisplay, coilIntersection(1)*1e1, coilIntersection(2)*1e1, 'Color', 'red', 'Marker', 'o', 'MarkerSize', 10, 'LineWidth', 6);
             end
 
             % displays the coil centerline
+            if (isfield(app.niftidisplaydata, 'coilcenterline'))
+                delete(app.niftidisplaydata.coilcenterline);
+            end
             if (~isempty(startPoint) && ~isempty(endPoint))
                 app.niftidisplaydata.coilcenterline = plot(app.CrossSectionDisplay, [startPoint(1)*1e1, endPoint(1)*1e1], [startPoint(2)*1e1, endPoint(2)*1e1], 'Color', 'blue', 'LineWidth', 4);
             else

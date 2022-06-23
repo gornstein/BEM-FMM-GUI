@@ -43,4 +43,7 @@ end
 %Makarov's function used to display the coil
 bemf1_graphics_coil_CAD_app(app, Coil.P, Coil.t, 1);
 
+% Update the cross section display
+updatecoilnormaltocrosssectiondisplay(app);
+
 end
