@@ -1,5 +1,8 @@
 function processEField(app)
-
+% 
+% app.SolverDisplay.Children = cat(1,app.SolverDisplay.Children,app.CrossSectionDisplay.Children);
+% wait(1);
+% app.SolverDisplay = app.CrossSectionDisplay;
 clc
 
 constants.eps0        = 8.85418782e-012;  %   Dielectric permittivity of vacuum(~air)
@@ -64,7 +67,7 @@ pause(0.4);
 % Define observation surface 1: coil centerline
 % parameters:
 orig_temp = coil.origin; % named orig_temp to not confuse bem3_line_field_e
-dirline   = -coil.centerlineDirection;
+dirline   = coil.centerlineDirection;
 distance  = 0.1;                 % Distance (m) that the line should reach from the origin
 numPoints = 10000;               % Number of points in the line
 obs1 = bemfmm_makeObsLine_2(orig_temp, dirline, distance, numPoints);
@@ -122,12 +125,16 @@ disp(['Observation plane fields computed in ' num2str(toc) ' seconds']);
 temp = vecnorm(obs2.FieldESecondary+obs2.FieldEPrimary, 2, 2);
 opts.ThresholdHigh = 120; opts.ThresholdLow = -10; opts.NumLevels = 40;
 figure; hold on;
-lims = bemplot_2D_planeField(obs2, temp, opts);
-bemplot_2D_modelIntersections(model, obs2);
+lims = bemplot_2D_planeField(obs2, temp, opts); % contourf returns error
+
+bemplot_2D_modelIntersections_app(app.SolverDisplay, model, obs2);
 title('E-field (V/m), precomputed integrals');
 axis 'equal';
 xlim(lims.XLim);
 ylim(lims.YLim);
 
+pause;
+bem3_surface_field_c_app.m
+% For debugging
 pause;
 end

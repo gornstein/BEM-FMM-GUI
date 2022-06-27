@@ -36,7 +36,7 @@ function coil = bemfmm_positionCoilT(coil, transMatrix)
     newCenterline = (rotMatrix * defaultCenterline)';
 
     % Update metadata
-    coil.origin = [transMatrix(1, 4) transMatrix(2, 4) transMatrix(3, 4)];
+    coil.origin = [transMatrix(1, 4) transMatrix(2, 4) transMatrix(3, 4)]*1e-2;
     coil.centerlineDirection = newCenterline;
     coil.centerlineTheta = 'Unknown when defined via bemfmm_positionCoilT';   %Placeholder because we don't know the angle
     coil.transformationMatrix = transMatrix;

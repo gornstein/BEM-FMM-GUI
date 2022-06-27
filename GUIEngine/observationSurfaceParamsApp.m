@@ -3,7 +3,7 @@ function [planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensi
 planeWidth = app.PlaneWidthcmEditField.Value;
 planeAxis = app.planes{app.selectedplaneidx}{2};
 planeCenter = app.planes{app.selectedplaneidx}{3}*1e-2;
-planeHeight = 40*1e-3; % Hardcoded for now, not sure if this should be an option to change
+planeHeight = app.PlaneWidthcmEditField.Value; % Set to same as planeWidth
 pointDensity = 300/planeWidth; % As it was in v0.4, might change to a non scaling method
 
 if strcmp(planeAxis,'xy') == 1
