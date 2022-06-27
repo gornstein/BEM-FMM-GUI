@@ -1,8 +1,10 @@
 function coil = bemfmm_loadCoil_app(fnamecoil, fnamecoilcad)
-    % Load coil
-    strcoil = load(fnamecoil);
+    % Load the two coil .mat files (used in GUI)
+    load(fnamecoil);
     coilCAD = load(fnamecoilcad);
-    coiltemp = [strcoil, coilCAD];
+
+    % Concatenate both coil files for use here
+    coiltemp = struct('strcoil', strcoil, 'coilCAD', coilCAD);
   
     % These fields are used to reset the coil
     coil.strcoil_base = coiltemp.strcoil;
@@ -13,8 +15,8 @@ function coil = bemfmm_loadCoil_app(fnamecoil, fnamecoilcad)
     coil.centerlineTheta_base = 0;
         
     % These fields will be updated by functions like bemfmm_positionCoil
-    coil.strcoil = coiltemp.coil.strcoil;
-    coil.coilCAD = coiltemp.coil.coilCAD;
+    coil.strcoil = coiltemp.strcoil;
+    coil.coilCAD = coiltemp.coilCAD;
     
     % Positioning information
     coil.origin = [0 0 0];
