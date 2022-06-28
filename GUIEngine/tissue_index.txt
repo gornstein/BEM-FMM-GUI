@@ -1,4 +1,3 @@
->Cerebellum : 110411_cerebellum.mat : 0.126 : CSF
 >CSF : 110411_csf.mat : 1.654 : Skull
 >GM : 110411_gm.mat : 0.275 : CSF
 >Skin : 110411_skin.mat : 0.465 : FreeSpace
