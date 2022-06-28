@@ -21,10 +21,10 @@ function obs = bemfmm_computeObsIntegrals(obs, model, obsOptions)
         eligibleTriangles = find(d <= R*meanTriangleSize);
         
         
-        % Debugging
-        figure;
-        patch('Faces', model.t(eligibleTriangles, :), 'Vertices', model.P, 'FaceColor', 'c', 'EdgeColor', 'k');
-        axis equal;
+%         % Debugging
+%         figure;
+%         patch('Faces', model.t(eligibleTriangles, :), 'Vertices', model.P, 'FaceColor', 'c', 'EdgeColor', 'k');
+%         axis equal;
         
     elseif strcmpi(obs.Type, 'Plane')
         

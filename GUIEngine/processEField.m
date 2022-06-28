@@ -62,41 +62,41 @@ solution = bemfmm_chargeEngineBase(model, coil, constants, solverOptions);
 disp('Finished running charge engine');
 pause(0.4);
 
-% Define observation surface 1: coil centerline
-% parameters:
-orig_temp = coil.origin; % named orig_temp to not confuse bem3_line_field_e
-dirline   = coil.centerlineDirection;
-distance  = 0.1;                 % Distance (m) that the line should reach from the origin
-numPoints = 10000;               % Number of points in the line
-obs1 = bemfmm_makeObsLine_2(orig_temp, dirline, distance, numPoints);
+% % Define observation surface 1: coil centerline
+% % parameters:
+% orig_temp = coil.origin; % named orig_temp to not confuse bem3_line_field_e
+% dirline   = coil.centerlineDirection;
+% distance  = 0.1;                 % Distance (m) that the line should reach from the origin
+% numPoints = 10000;               % Number of points in the line
+% obs1 = bemfmm_makeObsLine_2(orig_temp, dirline, distance, numPoints);
 
-disp('Finished making observation line');
-pause(0.2);
+% disp('Finished making observation line');
+% pause(0.2);
 
 % Set up options for observation point field evaluation
 obsOptions.prec = 1e-3;
 obsOptions.relativeIntegrationRadius = 5;
 
-% Precompute coil fields
-disp('Precomputing coil fields (observation line integrals)');
-pause(0.2);
-tic
-obs1 = bemfmm_computeObsIntegrals(obs1, model, obsOptions);
-disp(['Observation line integrals computed in ' num2str(toc) ' s']);
-
-% Compute precise field at coil centerline
-disp('Computing precise field at coil centerline');
-pause(0.2);
-tic
-obs1 = bemfmm_computeObsField(obs1, coil, model, solution, constants, obsOptions);
-disp(['Observation line fields computed in ' num2str(toc) 's']);
+% % Precompute coil fields
+% disp('Precomputing coil fields (observation line integrals)');
+% pause(0.2);
+% tic
+% obs1 = bemfmm_computeObsIntegrals(obs1, model, obsOptions);
+% disp(['Observation line integrals computed in ' num2str(toc) ' s']);
+% 
+% % Compute precise field at coil centerline
+% disp('Computing precise field at coil centerline');
+% pause(0.2);
+% tic
+% obs1 = bemfmm_computeObsField(obs1, coil, model, solution, constants, obsOptions);
+% disp(['Observation line fields computed in ' num2str(toc) 's']);
 
 % % Placeholder: This will be wrapped into a plot method for the obs line
 % figure;
 % EMagLine_sec = vecnorm(obs1.FieldESecondary, 2, 2);
 % plot(obs1.argline*1000, EMagLine_sec, '--b', 'LineWidth', 2);
 
-disp(newline);
+% disp(newline);
 
 % Define observation surface 2: Plane
 % Parameters for plane
@@ -112,29 +112,30 @@ disp(newline);
 disp('Making observation plane and computing integrals + fields');
 pause(0.2);
 obs2 = bemfmm_makeObsPlane(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity);
-tic
+% tic
 % obs2 = bemfmm_computeObsIntegrals(obs2, model, obsOptions);                     %%%%%
 % disp(['Observation plane integrals evaluated in ' num2str(toc) ' seconds']);
 % tic                                                                             % going to be replaced
 % obs2 = bemfmm_computeObsField(obs2, coil, model, solution, constants, obsOptions);
 % disp(['Observation plane fields computed in ' num2str(toc) ' seconds']);        %%%%%
+% FORTRAN version of computeObsField, faster
 obs2 = bemfmm_computeObsField_oneshot(obs2, coil, model, solution, constants, obsOptions);
 
 % Plot total E-field
 temp = vecnorm(obs2.FieldESecondary+obs2.FieldEPrimary, 2, 2);
-opts.ThresholdHigh = 120; opts.ThresholdLow = 60; opts.NumLevels = 20;
-figure; hold on;
-lims = bemplot_2D_planeField(obs2, temp, opts);
+opts.ThresholdHigh = 120; opts.ThresholdLow = 60; opts.NumLevels = 40;
+% figure; hold on;
+% This one  plots the layers
+lims = bemplot_2D_planeField_app(app.SolverDisplay, obs2, temp, opts);
 
+% Contour Plot overlay
 bemplot_2D_modelIntersections_app(app.SolverDisplay, model, obs2);
-title('E-field (V/m), precomputed integrals');
-axis 'equal';
-xlim(lims.XLim);
-ylim(lims.YLim);
+% title('E-field (V/m), precomputed integrals');
+% axis 'equal';
+% xlim(lims.XLim);
+% ylim(lims.YLim);
+app.SolverDisplay.XLim = lims.XLim;
+app.SolverDisplay.YLim = lims.YLim;
 
-% pause;
-% bem3_surface_field_c_app.m
-
-% For debugging
-pause;
+disp('DONE');
 end

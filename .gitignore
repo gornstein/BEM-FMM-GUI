@@ -6,7 +6,8 @@ CombinedMeshP.mat
 /DemoCoilGUI_resources/**
 *.asv
 fort.13
-prev_session.mat
-tissue_index.txt
 GUIEngine/coil.mat
 GUIEngine/coilCAD.mat
+GUIEngine/prev_session.mat
+GUIEngine/tissue_index.txt
+GUIEngine/processEFieldWorkspace.mat
