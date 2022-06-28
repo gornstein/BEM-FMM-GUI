@@ -17,7 +17,7 @@ function [recommendedLimits] = bemplot_2D_planeField_app(axis, obsPlane, fieldTo
     
     %% Perform thresholding
     % If a low threshold is not specified, use the 2nd percentile of the data
-    if nargin < 4 || isempty(options) || ~isfield(options, 'ThresholdLow') || isempty(options.ThresholdLow)
+    if nargin < 4 || isempty(options) || ~isfield(options, 'ThresholdLow') || isempty(options.ThresholdLow) || strcmpi(options.ThresholdLow,'null')
         sortedTemp = sort(temp);
         lowPercentileIndex = floor(0.02*length(temp));
         thLow = sortedTemp(lowPercentileIndex);
@@ -26,7 +26,7 @@ function [recommendedLimits] = bemplot_2D_planeField_app(axis, obsPlane, fieldTo
     end
     
     % If a high threshold is not specified, use the 98th percentile of the data
-    if nargin < 3 || isempty(options) || ~isfield(options, 'ThresholdHigh') || isempty(options.ThresholdHigh)
+    if nargin < 3 || isempty(options) || ~isfield(options, 'ThresholdHigh') || isempty(options.ThresholdHigh) || strcmpi(options.ThresholdHigh,'null')
         if ~exist(sortedTemp, 'var') % Reuse the sorted list if available
             sortedTemp = sort(temp);
         end
