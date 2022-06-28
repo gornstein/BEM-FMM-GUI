@@ -4,3 +4,9 @@ CombinedMeshP.mat
 /DemoCoilGUI/**
 /DemoCoilGUI.prj
 /DemoCoilGUI_resources/**
+*.asv
+fort.13
+prev_session.mat
+tissue_index.txt
+GUIEngine/coil.mat
+GUIEngine/coilCAD.mat

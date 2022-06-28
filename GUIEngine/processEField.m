@@ -1,8 +1,5 @@
 function processEField(app)
-% 
-% app.SolverDisplay.Children = cat(1,app.SolverDisplay.Children,app.CrossSectionDisplay.Children);
-% wait(1);
-% app.SolverDisplay = app.CrossSectionDisplay;
+
 clc
 
 constants.eps0        = 8.85418782e-012;  %   Dielectric permittivity of vacuum(~air)
@@ -34,6 +31,7 @@ transMatrix = [app.MatrixField11.Value, app.MatrixField12.Value, app.MatrixField
     app.MatrixField21.Value, app.MatrixField22.Value, app.MatrixField23.Value, app.MatrixField24.Value;
     app.MatrixField31.Value, app.MatrixField32.Value, app.MatrixField33.Value, app.MatrixField34.Value;
     app.MatrixField41.Value, app.MatrixField42.Value, app.MatrixField43.Value, app.MatrixField44.Value];
+    transMatrix(1:3,4) = transMatrix(1:3,4)*1e-2;
 coil = bemfmm_positionCoilT(coil, transMatrix);
 
 disp('Coil Positioned');
@@ -115,17 +113,18 @@ disp('Making observation plane and computing integrals + fields');
 pause(0.2);
 obs2 = bemfmm_makeObsPlane(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity);
 tic
-obs2 = bemfmm_computeObsIntegrals(obs2, model, obsOptions);
-disp(['Observation plane integrals evaluated in ' num2str(toc) ' seconds']);
-tic
-obs2 = bemfmm_computeObsField(obs2, coil, model, solution, constants, obsOptions);
-disp(['Observation plane fields computed in ' num2str(toc) ' seconds']);
+% obs2 = bemfmm_computeObsIntegrals(obs2, model, obsOptions);                     %%%%%
+% disp(['Observation plane integrals evaluated in ' num2str(toc) ' seconds']);
+% tic                                                                             % going to be replaced
+% obs2 = bemfmm_computeObsField(obs2, coil, model, solution, constants, obsOptions);
+% disp(['Observation plane fields computed in ' num2str(toc) ' seconds']);        %%%%%
+obs2 = bemfmm_computeObsField_oneshot(obs2, coil, model, solution, constants, obsOptions);
 
 % Plot total E-field
 temp = vecnorm(obs2.FieldESecondary+obs2.FieldEPrimary, 2, 2);
-opts.ThresholdHigh = 120; opts.ThresholdLow = -10; opts.NumLevels = 40;
+opts.ThresholdHigh = 120; opts.ThresholdLow = 60; opts.NumLevels = 20;
 figure; hold on;
-lims = bemplot_2D_planeField(obs2, temp, opts); % contourf returns error
+lims = bemplot_2D_planeField(obs2, temp, opts);
 
 bemplot_2D_modelIntersections_app(app.SolverDisplay, model, obs2);
 title('E-field (V/m), precomputed integrals');
@@ -133,8 +132,9 @@ axis 'equal';
 xlim(lims.XLim);
 ylim(lims.YLim);
 
-pause;
-bem3_surface_field_c_app.m
+% pause;
+% bem3_surface_field_c_app.m
+
 % For debugging
 pause;
 end
