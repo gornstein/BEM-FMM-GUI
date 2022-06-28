@@ -125,7 +125,7 @@ obs2 = bemfmm_computeObsField_oneshot(obs2, coil, model, solution, constants, ob
 
 % Plot total E-field
 temp = vecnorm(obs2.FieldESecondary+obs2.FieldEPrimary, 2, 2);
-opts.ThresholdHigh = 'null'; opts.ThresholdLow = 'null'; opts.NumLevels = 40;
+opts.ThresholdHigh = 120; opts.ThresholdLow = 40; opts.NumLevels = 40;
 % figure; hold on;
 % This one  plots the layers
 lims = bemplot_2D_planeField_app(app.SolverDisplay, obs2, temp, opts);

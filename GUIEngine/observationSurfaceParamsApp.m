@@ -1,9 +1,9 @@
 function [planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity] = observationSurfaceParamsApp(app)
 
-planeWidth = app.PlaneWidthcmEditField.Value*1e-2/2;
+planeWidth = app.PlaneWidthcmEditField.Value*2*1e-2;
 planeAxis = app.planes{app.selectedplaneidx}{2};
 planeCenter = app.planes{app.selectedplaneidx}{3}*1e-2;
-planeHeight = app.PlaneWidthcmEditField.Value*1e-2/2; % Set to same as planeWidth
+planeHeight = app.PlaneWidthcmEditField.Value*2*1e-2; % Set to same as planeWidth
 pointDensity = 300/planeWidth; % As it was in v0.4, might change to a non scaling method
 
 if strcmp(planeAxis,'xy') == 1
