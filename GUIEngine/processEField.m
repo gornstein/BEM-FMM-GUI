@@ -1,5 +1,7 @@
 function processEField(app)
 
+cla(app.SolverDisplay);
+
 clc
 
 constants.eps0        = 8.85418782e-012;  %   Dielectric permittivity of vacuum(~air)
@@ -136,6 +138,10 @@ bemplot_2D_modelIntersections_app(app.SolverDisplay, model, obs2);
 % ylim(lims.YLim);
 app.SolverDisplay.XLim = lims.XLim;
 app.SolverDisplay.YLim = lims.YLim;
+
+updatecoilnormaltosolverdisplay(app);
+
+%Draw 
 
 disp('DONE');
 end

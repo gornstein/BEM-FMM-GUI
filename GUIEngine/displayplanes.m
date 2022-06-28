@@ -2,7 +2,7 @@ function displayplanes(app)
 
 if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
 
-        %%  Defines the three planes
+    %%  Defines the three planes
     %   Getting coords for field planes
     X = app.planes{app.selectedplaneidx}{3}(1);  %   X-Coord of the plane's center cm
     Y = app.planes{app.selectedplaneidx}{3}(2);  %   Y-Coord of the plane's center cm
@@ -56,8 +56,8 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
             bemplot_2D_modelIntersections_app(app.CrossSectionDisplay, model, obs); %   Check these things
 
             % Set axis labels
-            app.CrossSectionDisplay.XLabel.String = 'X (cm)';
-            app.CrossSectionDisplay.YLabel.String = 'Y (cm)';
+            app.CrossSectionDisplay.XLabel.String = 'X (mm)';
+            app.CrossSectionDisplay.YLabel.String = 'Y (mm)';
 
             %Display the square crosssection
             if(isfield(app.niftidisplaydata, 'fieldplane'))
@@ -81,8 +81,8 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
             bemplot_2D_modelIntersections_app(app.CrossSectionDisplay, model, obs); %   Check these things
 
             % Set axis labels
-            app.CrossSectionDisplay.XLabel.String = 'X (cm)';
-            app.CrossSectionDisplay.YLabel.String = 'Z (cm)';
+            app.CrossSectionDisplay.XLabel.String = 'X (mm)';
+            app.CrossSectionDisplay.YLabel.String = 'Z (mm)';
 
             %Display the square crosssection
             if(isfield(app.niftidisplaydata, 'fieldplane'))
@@ -106,8 +106,8 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
             bemplot_2D_modelIntersections_app(app.CrossSectionDisplay, model, obs); %   Check these things
 
             % Set axis labels
-            app.CrossSectionDisplay.XLabel.String = 'Y (cm)';
-            app.CrossSectionDisplay.YLabel.String = 'Z (cm)';
+            app.CrossSectionDisplay.XLabel.String = 'Y (mm)';
+            app.CrossSectionDisplay.YLabel.String = 'Z (mm)';
 
             %Display the square crosssection
             if(isfield(app.niftidisplaydata, 'fieldplane'))
@@ -119,7 +119,7 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
     % Display the coil's centerline and intersection point
     updatecoilnormaltocrosssectiondisplay(app);
     % Display the user's point if it exists
-    updateuserpointcrosssectiondisplay(app);
+    updatecoilnormaltocrosssectiondisplay(app)
     axis(app.CrossSectionDisplay, 'equal');
 
 end

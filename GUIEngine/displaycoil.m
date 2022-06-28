@@ -44,6 +44,6 @@ end
 bemf1_graphics_coil_CAD_app(app, Coil.P, Coil.t, 1);
 
 % Update the cross section display
-updatecoilnormaltocrosssectiondisplay(app);
+updatecoilnormaltocrosssectiondisplay(app)
 
 end
