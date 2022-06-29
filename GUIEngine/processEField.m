@@ -125,8 +125,9 @@ obs2 = bemfmm_computeObsField_oneshot(obs2, coil, model, solution, constants, ob
 
 % Plot total E-field
 temp = vecnorm(obs2.FieldESecondary+obs2.FieldEPrimary, 2, 2);
-opts.ThresholdHigh = 120; opts.ThresholdLow = 40; opts.NumLevels = 40;
+opts.ThresholdHigh = -1; opts.ThresholdLow = -1; opts.NumLevels = 40;
 % figure; hold on;
+
 % This one  plots the layers
 lims = bemplot_2D_planeField_app(app.SolverDisplay, obs2, temp, opts);
 
@@ -138,10 +139,10 @@ bemplot_2D_modelIntersections_app(app.SolverDisplay, model, obs2);
 % ylim(lims.YLim);
 app.SolverDisplay.XLim = lims.XLim;
 app.SolverDisplay.YLim = lims.YLim;
+colorbar(app.SolverDisplay,"north");
 
+% Draw
 updatecoilnormaltosolverdisplay(app);
-
-%Draw 
 
 disp('DONE');
 end
