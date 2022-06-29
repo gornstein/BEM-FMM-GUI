@@ -1,6 +1,0 @@
->CSF : 110411_csf.mat : 1.654 : Skull
->GM : 110411_gm.mat : 0.275 : CSF
->Skin : 110411_skin.mat : 0.465 : FreeSpace
->Skull : 110411_skull.mat : 0.01 : Skin
->Ventricles : 110411_ventricles.mat : 1.654 : WM
->WM : 110411_wm.mat : 0.126 : GM
