@@ -7,12 +7,18 @@ clc
 constants.eps0        = 8.85418782e-012;  %   Dielectric permittivity of vacuum(~air)
 constants.mu0         = 1.25663706e-006;  %   Magnetic permeability of vacuum(~air)
 
-% Setting parallel pool params and creating parpool
-numthreads = app.NumberOfThreadsForProcessingEditField.Value;
-tempPool = gcp('nocreate'); %   See if a parallel pool already exists
-if isempty(tempPool) || tempPool.NumWorkers ~= numthreads
-    delete(gcp('nocreate'));
-    parpool(numthreads);
+try
+    % Setting parallel pool params and creating parpool
+    numthreads = app.NumberOfThreadsForProcessingEditField.Value;
+    tempPool = gcp('nocreate'); %   See if a parallel pool already exists
+    if isempty(tempPool) || tempPool.NumWorkers ~= numthreads
+        delete(gcp('nocreate'));
+        parpool(numthreads);
+    end
+
+catch exception
+    throwErrorPopup(app, exception.message, 'Error');
+    return;
 end
 
 % Assemble the model
