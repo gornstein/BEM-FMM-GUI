@@ -9,7 +9,7 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
     Z = app.planes{app.selectedplaneidx}{3}(3);  %   Z-Coord of the plane's center cm
 
     %%  Defines aspects for field planes
-    delta = app.PlaneWidthcmEditField.Value;  %   half plane window, cm
+    delta = app.PlaneWidthcmEditField.Value/2;  %   half plane window, cm
     xmin = X - delta;   % Cross-section left edge
     xmax = X + delta;   % Cross-section right edge
     ymin = Y - delta;   % Cross-section posterior edge
