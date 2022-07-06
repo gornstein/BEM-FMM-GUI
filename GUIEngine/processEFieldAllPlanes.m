@@ -1,4 +1,4 @@
-function processEField(app)
+function processEFieldAllPlanes(app)
 
 cla(app.SolverDisplay);
 
@@ -44,12 +44,6 @@ coil = bemfmm_positionCoilT(coil, transMatrix);
 
 disp('Coil Positioned');
 pause(0.2);
-
-% % Replaced by above positioning functioning
-% coilOrigin = [app.MatrixField14.Value app.MatrixField24.Value app.MatrixField34.Value] *1e-2;  % Origin in meters
-% coilAxis = [0 0 -1]*1e-3;     % Dimensionless vector describing coil tilt
-% coilTheta = 0;                  % Angle in radians describing coil rotation about axis
-% coil = bemfmm_positionCoil(coil, coilOrigin, coilAxis, coilTheta);
 
 % Assign coil stimulus
 coilCurrent = app.CoilCurrentEditField.Value;
@@ -104,54 +98,36 @@ obsOptions.relativeIntegrationRadius = 5;
 % EMagLine_sec = vecnorm(obs1.FieldESecondary, 2, 2);
 % plot(obs1.argline*1000, EMagLine_sec, '--b', 'LineWidth', 2);
 
-% disp(newline);
+[planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity, numberOfPlanes] = observationSurfaceParamsAll_app(app);
+% Set some stuff for dropdown
+processingPlanesDD(app);
 
-% Define observation surface 2: Plane
-% Parameters for plane
-% planeNormal  = [0 0 1];
-% planeCenter  = [31 0 55.5]*1e-3;
-% planeUp      = [0 1 0]; 
-% planeHeight  = 40*1e-3;
-% planeWidth   = 40*1e-3;
-% pointDensity = 300/planeWidth;
-[planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity] = observationSurfaceParamsApp(app);
+app.EFieldModel = model;
 
-% Make plane, compute neighbor integrals, compute E-field
-disp('Making observation plane and computing integrals + fields');
-pause(0.2);
-obs2 = bemfmm_makeObsPlane(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity);
-% tic
-% obs2 = bemfmm_computeObsIntegrals(obs2, model, obsOptions);                     %%%%%
-% disp(['Observation plane integrals evaluated in ' num2str(toc) ' seconds']);
-% tic                                                                             % going to be replaced
-% obs2 = bemfmm_computeObsField(obs2, coil, model, solution, constants, obsOptions);
-% disp(['Observation plane fields computed in ' num2str(toc) ' seconds']);        %%%%%
+%% Loop here for planes
+for n = 1:numberOfPlanes
 
-% FORTRAN version of computeObsField, faster
-obs2 = bemfmm_computeObsField_oneshot(obs2, coil, model, solution, constants, obsOptions);
+    % Make plane, compute neighbor integrals, compute E-field
+    disp('Making observation plane and computing integrals + fields');
+    pause(0.2);
+    obs2 = bemfmm_makeObsPlaneAllPlanes(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity, n);
+    
+    % FORTRAN version of computeObsField, faster
+    obs2 = bemfmm_computeObsField_oneshot(obs2, coil, model, solution, constants, obsOptions);
+    
+    % Store obs2 for each iteration
+    app.EFieldObs2{n} = obs2;
+    
+    % setup stuff for plots and store in app
+    app.vecnormObs2{n} = vecnorm(obs2.FieldESecondary+obs2.FieldEPrimary, 2, 2);
 
-% Plot total E-field
-temp = vecnorm(obs2.FieldESecondary+obs2.FieldEPrimary, 2, 2);
-opts.ThresholdHigh = -1; opts.ThresholdLow = -1; opts.NumLevels = 40;
-% figure; hold on;
-
-% This one  plots the layers
-lims = bemplot_2D_planeField_app(app.SolverDisplay, obs2, temp, opts);
-
-% Contour Plot overlay
-bemplot_2D_modelIntersections_app(app.SolverDisplay, model, obs2);
-% title('E-field (V/m), precomputed integrals');
-% axis 'equal';
-% xlim(lims.XLim);
-% ylim(lims.YLim);
-app.SolverDisplay.XLim = lims.XLim;
-app.SolverDisplay.YLim = lims.YLim;
-colorbar(app.SolverDisplay,"north");
+end
 
 % Draw
-updatecoilnormaltosolverdisplay(app);
+% updatecoilnormaltosolverdisplay(app);
 
 app.PlaneSelectionDropDown.Visible = true;
+app.PlaneSelectionDropDownLabel.Visible = true;
 
 disp('DONE');
 end
