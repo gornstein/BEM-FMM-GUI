@@ -80,22 +80,22 @@ ProcessBaseDataTime = toc
 
 %%   Add accurate integration for electric field/electric potential on neighbor facets
 %   Indexes into neighbor triangles
-numThreads = 15;        %   number of cores to be used
-RnumberE        = 4;    %   number of neighbor triangles for analytical integration (fixed, optimized)
-ineighborE      = knnsearch(Center, Center, 'k', RnumberE);   % [1:N, 1:Rnumber]
-ineighborE      = ineighborE';           %   do transpose    
+% numThreads = 15;        %   number of cores to be used
+% RnumberE        = 4;    %   number of neighbor triangles for analytical integration (fixed, optimized)
+% ineighborE      = knnsearch(Center, Center, 'k', RnumberE);   % [1:N, 1:Rnumber]
+% ineighborE      = ineighborE';           %   do transpose    
 % EC         = meshneighborints_2(P, t, normals, Area, Center, RnumberE, ineighborE, numThreads);
 
 %%   Normalize sparse matrix EC by variable contrast (for speed up)
-N   = size(Center, 1);
-ii  = ineighborE;
-jj  = repmat(1:N, RnumberE, 1); 
-CO  = sparse(ii, jj, contrast(ineighborE));
+% N   = size(Center, 1);
+% ii  = ineighborE;
+% jj  = repmat(1:N, RnumberE, 1); 
+% CO  = sparse(ii, jj, contrast(ineighborE));
 %EC  = CO.*EC;
-EC = 0;
+%EC = 0;
 
 tic
-NewName  = 'CombinedMeshP.mat';
+% NewName  = 'CombinedMeshP.mat';
 %save(NewName, 'tneighbor',  'RnumberE',   'ineighborE', 'EC', '-v7.3');
 SaveBigDataTime = toc
 end
