@@ -122,7 +122,7 @@ for n = 1:numberOfPlanes
     app.vecnormObs2{n} = vecnorm(obs2.FieldESecondary+obs2.FieldEPrimary, 2, 2);
 
     % store plane centers
-    app.planeCentersComp(n) = app.planes{n}{3};
+    app.planeCentersComp{n} = app.planes{n}{3};
 
 end
 

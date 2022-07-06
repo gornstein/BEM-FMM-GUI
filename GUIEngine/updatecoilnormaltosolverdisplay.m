@@ -12,10 +12,10 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
         app.MatrixField31.Value, app.MatrixField32.Value, app.MatrixField33.Value];
     coilNorm = (rotMat * [0; 0; -1])'; % normal vector for coil's direction
 
-    planeCenter = app.planeCentersComp(app.processingPlaneidx); % Plane center location in cm
+    planeCenter = app.planeCentersComp{1,app.processingPlaneidx}; % Plane center location in cm
 
 
-    switch app.planes{app.selectedplaneidx}{2}
+    switch app.planes{app.processingPlaneidx}{2}
         case 'xy'
 
             % All in cm
@@ -243,7 +243,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
     userPointY = app.PointYValEditField.Value;
     userPointZ = app.PointZValEditField.Value;
 
-    switch app.planes{app.selectedplaneidx}{2}
+    switch app.planes{app.processingPlaneidx}{2}
         case 'xy'
             plot(app.SolverDisplay, userPointX*1e-2, userPointY*1e-2, Color = 'green', Marker= '*', MarkerSize=10);
             app.SolverDisplay.XLabel.String = 'X (m)';
