@@ -121,10 +121,10 @@ for n = 1:numberOfPlanes
     % setup stuff for plots and store in app
     app.vecnormObs2{n} = vecnorm(obs2.FieldESecondary+obs2.FieldEPrimary, 2, 2);
 
-end
+    % store plane centers
+    app.planeCentersComp(n) = app.planes{n}{3};
 
-% Draw
-% updatecoilnormaltosolverdisplay(app);
+end
 
 app.PlaneSelectionDropDown.Visible = true;
 app.PlaneSelectionDropDownLabel.Visible = true;
