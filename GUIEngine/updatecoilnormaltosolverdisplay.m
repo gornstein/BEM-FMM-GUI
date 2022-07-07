@@ -1,5 +1,7 @@
 function updatecoilnormaltosolverdisplay(app)
 
+%%  FIND THE START AND END POINT FOR THE COIL NORMAL WITHIN RANGE AND THE INTERSECTION 
+% BETWEEN THE COIL NORMAL AND THE TARGET PLANE IF THEY EXIST
 if ~isempty(app.planes) % if the planes are empty then there will be nothing to display to
 
     %HARDCODED
@@ -66,28 +68,19 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
                 end
             end
 
-            % displays the intersection point
-%             if (isfield(app.niftidisplaydata, 'centerlineintersection'))
-%                 delete(app.niftidisplaydata.centerlineintersection);
-%             end
+            % saves the inversection point
             if (~isempty(coilIntersection))
-                app.niftidatainfo.intersectionPoint = [coilIntersection(1), coilIntersection(2)];
-%                 app.niftidisplaydata.centerlineintersection = plot(app.CrossSectionDisplay, coilIntersection(1)*1e1, coilIntersection(2)*1e1, 'Color', 'red', 'Marker', 'o', 'MarkerSize', 10, 'LineWidth', 6);
+                coilIntersection = [coilIntersection(1), coilIntersection(2)];
             end
 
-            % displays the coil centerline
-%             if (isfield(app.niftidisplaydata, 'coilcenterline'))
-%                 delete(app.niftidisplaydata.coilcenterline);
-%             end
+            % saves the coil centerline
             if (~isempty(startPoint) && ~isempty(endPoint))
-                app.niftidatainfo.coilLineStartPoint = [startPoint(1), startPoint(2)];
-                app.niftidatainfo.coilLineEndPoint = [endPoint(1), endPoint(2)];
-%                 app.niftidisplaydata.coilcenterline = plot(app.CrossSectionDisplay, [startPoint(1)*1e1, endPoint(1)*1e1], [startPoint(2)*1e1, endPoint(2)*1e1], 'Color', 'blue', 'LineWidth', 4);
+                startPoint = [startPoint(1), startPoint(2)];
+                endPoint = [endPoint(1), endPoint(2)];
             else
-                disp('No valid points found');
+                % disp('No valid points found'); debugging
             end
 
-            %%
         case 'xz'
             % All in cm
             xMin = -bounds;
@@ -137,27 +130,19 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
                 end
             end
 
-            % displays the intersection point
-%             if (isfield(app.niftidisplaydata, 'centerlineintersection'))
-%                 delete(app.niftidisplaydata.centerlineintersection);
-%             end
+            % saves the intersection point
             if (~isempty(coilIntersection))
-                app.niftidatainfo.intersectionPoint = [coilIntersection(1), coilIntersection(3)];
-%                 app.niftidisplaydata.centerlineintersection = plot(app.CrossSectionDisplay, coilIntersection(1)*1e1, coilIntersection(3)*1e1, 'Color', 'red', 'Marker', 'o', 'MarkerSize', 10, 'LineWidth', 6);
+                coilIntersection = [coilIntersection(1), coilIntersection(3)];
             end
 
-            % displays the coil centerline
-%             if (isfield(app.niftidisplaydata, 'coilcenterline'))
-%                 delete(app.niftidisplaydata.coilcenterline);
-%             end
+            % saves the coil centerline
             if (~isempty(startPoint) && ~isempty(endPoint))
-                app.niftidatainfo.coilLineStartPoint = [startPoint(1), startPoint(3)];
-                app.niftidatainfo.coilLineEndPoint = [endPoint(1), endPoint(3)];
-%                 app.niftidisplaydata.coilcenterline = plot(app.CrossSectionDisplay, [startPoint(1)*1e1, endPoint(1)*1e1], [startPoint(3)*1e1, endPoint(3)*1e1], 'Color', 'blue', 'LineWidth', 4);
+                startPoint = [startPoint(1), startPoint(3)];
+                endPoint = [endPoint(1), endPoint(3)];
             else
                 disp('No valid points found');
             end
-            %%
+
         case 'yz'
             % All in cm
             xMin = planeCenter(1) - displayDist;
@@ -207,33 +192,27 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
                 end
             end
 
-            % displays the intersection point
-%             if (isfield(app.niftidisplaydata, 'centerlineintersection'))
-%                 delete(app.niftidisplaydata.centerlineintersection);
-%             end
+            % saves the intersection point
             if (~isempty(coilIntersection))
-                app.niftidatainfo.intersectionPoint = [coilIntersection(2), coilIntersection(3)];
-%                 app.niftidisplaydata.centerlineintersection = plot(app.CrossSectionDisplay, coilIntersection(2)*1e1, coilIntersection(3)*1e1, 'Color', 'red', 'Marker', 'o', 'MarkerSize', 10, 'LineWidth', 6);
+                coilIntersection = [coilIntersection(2), coilIntersection(3)];
             end
 
-            % displays the coil centerline
-%             if (isfield(app.niftidisplaydata, 'coilcenterline'))
-%                 delete(app.niftidisplaydata.coilcenterline);
-%             end
+            % saves the coil centerline
             if (~isempty(startPoint) && ~isempty(endPoint))
-                app.niftidatainfo.coilLineStartPoint = [startPoint(2), startPoint(3)];
-                app.niftidatainfo.coilLineEndPoint = [endPoint(2), endPoint(3)];
-%                 app.niftidisplaydata.coilcenterline = plot(app.CrossSectionDisplay, [startPoint(2)*1e1, endPoint(2)*1e1], [startPoint(3)*1e1, endPoint(3)*1e1], 'Color', 'blue', 'LineWidth', 4);
+                startPoint = [startPoint(2), startPoint(3)];
+                endPoint = [endPoint(2), endPoint(3)];
             else
                 disp('No valid points found');
             end
     end
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %% FROM ANOTHER FUNCTION THAT WROTE FOR THE PRIOR SYSTEM
+    %% PLOT THE INTERSECTION POINT AND THE COIL NORMAL IN RANGE
 
-    coilIntersection = app.niftidatainfo.intersectionPoint;
-    startPoint = app.niftidatainfo.coilLineStartPoint;
-    endPoint = app.niftidatainfo.coilLineEndPoint;
+    % coilIntersection is the intersection of the coil normal and the plane
+    % startPoint is the first point of the coil normal that falls within
+    % the bounds dictated by displayDist and bounds
+    % endPoint is the last point of the coil normal that falls within
+    % the bounds dictated by displayDist and bounds
     
     plot(app.SolverDisplay, coilIntersection(1)*1e-2, coilIntersection(2)*1e-2, 'Color', 'red', 'Marker', 'o', 'MarkerSize', 10, 'LineWidth', 10);
     plot(app.SolverDisplay, [startPoint(1)*1e-2, endPoint(1)*1e-2], [startPoint(2)*1e-2, endPoint(2)*1e-2], 'Color', 'blue', 'LineWidth', 4);
@@ -243,6 +222,8 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
     userPointY = app.PointYValEditField.Value;
     userPointZ = app.PointZValEditField.Value;
 
+    % Plots the user's point and sets the axis labels for the solver
+    % display
     switch app.planes{app.processingPlaneidx}{2}
         case 'xy'
             plot(app.SolverDisplay, userPointX*1e-2, userPointY*1e-2, Color = 'green', Marker= '*', MarkerSize=10);
