@@ -9,7 +9,13 @@ constants.mu0         = 1.25663706e-006;  %   Magnetic permeability of vacuum(~a
 
 try
     % Setting parallel pool params and creating parpool
-    numthreads = app.NumberOfThreadsForProcessingEditField.Value;
+    if app.NumberOfThreadsForProcessingEditField.Value == -1
+        numthreads = feature('NumCores');   % Detects number of physical cores
+    elseif app.NumberOfThreadsForProcessingEditField.Value > 0
+        numthreads = app.NumberOfThreadsForProcessingEditField.Value;
+    else
+        numthreads = feature('NumCores');   % If something goes wrong just use number of physical cores
+    end
     tempPool = gcp('nocreate'); %   See if a parallel pool already exists
     if isempty(tempPool) || tempPool.NumWorkers ~= numthreads
         delete(gcp('nocreate'));
@@ -108,7 +114,7 @@ app.EFieldModel = model;
 for n = 1:numberOfPlanes
 
     % Make plane, compute neighbor integrals, compute E-field
-    disp('Making observation plane and computing integrals + fields');
+    disp(['Making observation plane and computing integrals + fields. Pass ', num2str(n), ' of ', num2str(numberOfPlanes)]);
     pause(0.2);
     obs2 = bemfmm_makeObsPlaneAllPlanes(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity, n);
     
