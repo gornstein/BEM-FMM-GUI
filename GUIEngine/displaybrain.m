@@ -12,10 +12,7 @@ delete(app.brainlight);
 tissue_to_plot = app.HeadCompartmentsDropDown.Value;
 ind1 = strcmp(app.meshInternalNames,tissue_to_plot);
 t0 = app.meshList{ind1}.ConnectivityList;
-P = app.meshList{ind1}.Points;
-
-
-P = P .* 1e-1;
+P = app.meshList{ind1}.Points; % mm
 
 
 %Creates str

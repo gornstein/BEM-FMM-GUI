@@ -19,10 +19,10 @@ rotMatrix = [app.MatrixField11.Value, app.MatrixField12.Value, app.MatrixField13
 %   1x3 Translation Matrix
 transMatrix = [app.MatrixField14.Value, app.MatrixField24.Value, app.MatrixField34.Value];
 
-%   Scale Matrix (m to cm)
-scaleMatrix = [100 0 0;
-    0 100 0;
-    0 0 100];
+%   Scale Matrix (m to mm)
+scaleMatrix = [1000 0 0;
+    0 1000 0;
+    0 0 1000];
 
 %   Apply the rotations and transformation to the coil
 for j = 1:size(CoilP,1)

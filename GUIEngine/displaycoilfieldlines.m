@@ -1,7 +1,7 @@
 function displaycoilfieldlines(app, rotationMatrix, translationMatrix)
 
 
-    magnitude = 10;
+    magnitude = 100; % distance in mm that vector will extend for
 
     %   Set the points for the vector
     vectorEnd = [0, magnitude, 0];
