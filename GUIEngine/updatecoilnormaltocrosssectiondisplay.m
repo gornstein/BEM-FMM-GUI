@@ -1,34 +1,33 @@
 function updatecoilnormaltocrosssectiondisplay(app)
-
 if ~isempty(app.planes) % if the planes are empty then there will be nothing to display to
     %HARDCODED
-    displayDist = 3; % Distance from which the line will be displayed in cm from the surface of the plane
-    bounds = 10; % Bounds for what will be displayed (will not display things out of bounds) along the plane from the center in cm
+    displayDist = 30; % Distance from which the line will be displayed in mm from the surface of the plane
+    bounds = 100; % Bounds for what will be displayed (will not display things out of bounds) along the plane from the center in mm
 
-    coilPos = [app.MatrixField14.Value, app.MatrixField24.Value, app.MatrixField34.Value]; % Coil location in cm
+    coilPos = [app.MatrixField14.Value, app.MatrixField24.Value, app.MatrixField34.Value]; % Coil location in mm
     rotMat = [app.MatrixField11.Value, app.MatrixField12.Value, app.MatrixField13.Value;
         app.MatrixField21.Value, app.MatrixField22.Value, app.MatrixField23.Value;
         app.MatrixField31.Value, app.MatrixField32.Value, app.MatrixField33.Value];
     coilNorm = (rotMat * [0; 0; -1])'; % normal vector for coil's direction
 
-    planeCenter = app.planes{app.selectedplaneidx}{3}; % Plane center location in cm
+    planeCenter = app.planes{app.selectedplaneidx}{3}(1:3)*1e3; % Plane center location in mm (from m to mm)
 
 
     switch app.planes{app.selectedplaneidx}{2}
         case 'xy'
 
             % All in cm
-            xMin = -bounds;
-            xMax = bounds;
-            yMin = -bounds;
-            yMax = bounds;
-            zMin = planeCenter(3) - displayDist;
-            zMax = planeCenter(3) + displayDist;
+            xMin = -bounds; % mm
+            xMax = bounds; % mm
+            yMin = -bounds; % mm
+            yMax = bounds; % mm
+            zMin = planeCenter(3) - displayDist; % mm
+            zMax = planeCenter(3) + displayDist; % mm
             startPoint = [];
             endPoint = [];
 
             % find the first point to fall within the bounds
-            for (i = 0:0.01:100)
+            for (i = 0:1:10000) % checking if there is a point in the first 10 meters
                 currentPos = coilPos+coilNorm*i;
 
                 % if the point falls within the bounds
@@ -41,7 +40,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
             if (~isempty(startPoint))
                 % find the next point along the vector to fall out of the
                 % bounds if any point was within the bounds
-                for (j = 0:0.01:100)
+                for (j = 0:1:10000) % checking if there is a point in the first 10 meters
                     currentPos = startPoint + coilNorm*j;
 
                     % if the point falls outside of the bounds
@@ -70,7 +69,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
                 delete(app.niftidisplaydata.centerlineintersection);
             end
             if (~isempty(coilIntersection))
-                app.niftidisplaydata.centerlineintersection = plot(app.CrossSectionDisplay, coilIntersection(1)*1e1, coilIntersection(2)*1e1, 'Color', 'red', 'Marker', 'o', 'MarkerSize', 10, 'LineWidth', 6);
+                app.niftidisplaydata.centerlineintersection = plot(app.CrossSectionDisplay, coilIntersection(1), coilIntersection(2), 'Color', 'red', 'Marker', 'o', 'MarkerSize', 10, 'LineWidth', 6);
             end
 
             % displays the coil centerline
@@ -78,7 +77,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
                 delete(app.niftidisplaydata.coilcenterline);
             end
             if (~isempty(startPoint) && ~isempty(endPoint))
-                app.niftidisplaydata.coilcenterline = plot(app.CrossSectionDisplay, [startPoint(1)*1e1, endPoint(1)*1e1], [startPoint(2)*1e1, endPoint(2)*1e1], 'Color', 'blue', 'LineWidth', 4);
+                app.niftidisplaydata.coilcenterline = plot(app.CrossSectionDisplay, [startPoint(1), endPoint(1)], [startPoint(2), endPoint(2)], 'Color', 'blue', 'LineWidth', 4);
             else
                 disp('No valid points found');
             end
@@ -96,7 +95,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
             endPoint = [];
 
             % find the first point to fall within the bounds
-            for (i = 0:0.01:100)
+            for (i = 0:1:10000) % checking if there is a point in the first 10 meters
                 currentPos = coilPos+coilNorm*i;
 
                 % if the point falls within the bounds
@@ -109,7 +108,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
             if (~isempty(startPoint))
                 % find the next point along the vector to fall out of the
                 % bounds if any point was within the bounds
-                for (j = 0:0.01:100)
+                for (j = 0:1:10000) % checking if there is a point in the first 10 meters
                     currentPos = startPoint + coilNorm*j;
 
                     % if the point falls outside of the bounds
@@ -138,7 +137,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
                 delete(app.niftidisplaydata.centerlineintersection);
             end
             if (~isempty(coilIntersection))
-                app.niftidisplaydata.centerlineintersection = plot(app.CrossSectionDisplay, coilIntersection(1)*1e1, coilIntersection(3)*1e1, 'Color', 'red', 'Marker', 'o', 'MarkerSize', 10, 'LineWidth', 6);
+                app.niftidisplaydata.centerlineintersection = plot(app.CrossSectionDisplay, coilIntersection(1), coilIntersection(3), 'Color', 'red', 'Marker', 'o', 'MarkerSize', 10, 'LineWidth', 6);
             end
 
             % displays the coil centerline
@@ -146,7 +145,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
                 delete(app.niftidisplaydata.coilcenterline);
             end
             if (~isempty(startPoint) && ~isempty(endPoint))
-                app.niftidisplaydata.coilcenterline = plot(app.CrossSectionDisplay, [startPoint(1)*1e1, endPoint(1)*1e1], [startPoint(3)*1e1, endPoint(3)*1e1], 'Color', 'blue', 'LineWidth', 4);
+                app.niftidisplaydata.coilcenterline = plot(app.CrossSectionDisplay, [startPoint(1), endPoint(1)], [startPoint(3), endPoint(3)], 'Color', 'blue', 'LineWidth', 4);
             else
                 disp('No valid points found');
             end
@@ -163,7 +162,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
             endPoint = [];
 
             % find the first point to fall within the bounds
-            for (i = 0:0.01:100)
+            for (i = 0:1:10000) % checking if there is a point in the first 10 meters
                 currentPos = coilPos+coilNorm*i;
 
                 % if the point falls within the bounds
@@ -176,7 +175,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
             if (~isempty(startPoint))
                 % find the next point along the vector to fall out of the
                 % bounds if any point was within the bounds
-                for (j = 0:0.01:100)
+                for (j = 0:1:10000) % checking if there is a point in the first 10 meters
                     currentPos = startPoint + coilNorm*j;
 
                     % if the point falls outside of the bounds
@@ -205,7 +204,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
                 delete(app.niftidisplaydata.centerlineintersection);
             end
             if (~isempty(coilIntersection))
-                app.niftidisplaydata.centerlineintersection = plot(app.CrossSectionDisplay, coilIntersection(2)*1e1, coilIntersection(3)*1e1, 'Color', 'red', 'Marker', 'o', 'MarkerSize', 10, 'LineWidth', 6);
+                app.niftidisplaydata.centerlineintersection = plot(app.CrossSectionDisplay, coilIntersection(2), coilIntersection(3), 'Color', 'red', 'Marker', 'o', 'MarkerSize', 10, 'LineWidth', 6);
             end
 
             % displays the coil centerline
@@ -213,7 +212,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
                 delete(app.niftidisplaydata.coilcenterline);
             end
             if (~isempty(startPoint) && ~isempty(endPoint))
-                app.niftidisplaydata.coilcenterline = plot(app.CrossSectionDisplay, [startPoint(2)*1e1, endPoint(2)*1e1], [startPoint(3)*1e1, endPoint(3)*1e1], 'Color', 'blue', 'LineWidth', 4);
+                app.niftidisplaydata.coilcenterline = plot(app.CrossSectionDisplay, [startPoint(2), endPoint(2)], [startPoint(3), endPoint(3)], 'Color', 'blue', 'LineWidth', 4);
             else
                 disp('No valid points found');
             end
