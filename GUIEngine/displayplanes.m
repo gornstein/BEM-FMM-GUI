@@ -45,13 +45,13 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
 
             % Parameters for plane
             planeNormal  = [0 0 1];
-            planeCenter  = [X Y Z]; % mm
+            planeCenter  = [X Y Z]*1e3; % m to mm
             planeUp      = [0 1 0];
-            planeHeight  = delta*1e-3; % mm to m
-            planeWidth   = delta*1e-3; % mm to m
+            planeHeight  = delta*1e3; % m to mm
+            planeWidth   = delta*1e3; % m to mm
             pointDensity = 300/planeWidth;
             obs = bemfmm_makeObsPlane(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity);
-            bemplot_2D_niftiCrossSection_app(app.CrossSectionDisplay, app.niftidata.VT1, app.niftidata.info, 'xy', Z*1e-3);
+            bemplot_2D_niftiCrossSection_app(app.CrossSectionDisplay, app.niftidata.VT1, app.niftidata.info, 'xy', Z);
             brighten(app.CrossSectionDisplay, 0.3);
             bemplot_2D_modelIntersections_app(app.CrossSectionDisplay, model, obs);
 
@@ -70,13 +70,13 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
 
             % Parameters for plane
             planeNormal  = [0 1 0];
-            planeCenter  = [X Y Z]; % mm
+            planeCenter  = [X Y Z]*1e3; % mm
             planeUp      = [0 0 1];
-            planeHeight  = delta*1e-3; % mm to m
-            planeWidth   = delta*1e-3; % mm to m
+            planeHeight  = delta*1e3; % m to mm
+            planeWidth   = delta*1e3; % m to mm
             pointDensity = 300/planeWidth;
             obs = bemfmm_makeObsPlane(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity);
-            bemplot_2D_niftiCrossSection_app(app.CrossSectionDisplay, app.niftidata.VT1, app.niftidata.info, 'xz', Y*1e-3);
+            bemplot_2D_niftiCrossSection_app(app.CrossSectionDisplay, app.niftidata.VT1, app.niftidata.info, 'xz', Y);
             brighten(app.CrossSectionDisplay, 0.3);
             bemplot_2D_modelIntersections_app(app.CrossSectionDisplay, model, obs);
 
@@ -95,13 +95,13 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
 
             % Parameters for plane
             planeNormal  = [1 0 0];
-            planeCenter  = [X Y Z]; % mm
+            planeCenter  = [X Y Z]*1e3; % m to mm
             planeUp      = [0 0 1];
-            planeHeight  = delta*1e-3; % mm to m
-            planeWidth   = delta*1e-3; % mm to m
+            planeHeight  = delta*1e3; % m to mm
+            planeWidth   = delta*1e3; % m to mm
             pointDensity = 300/planeWidth;
             obs = bemfmm_makeObsPlane(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity);
-            bemplot_2D_niftiCrossSection_app(app.CrossSectionDisplay, app.niftidata.VT1, app.niftidata.info, 'yz', X*1e-3);
+            bemplot_2D_niftiCrossSection_app(app.CrossSectionDisplay, app.niftidata.VT1, app.niftidata.info, 'yz', X);
             brighten(app.CrossSectionDisplay, 0.3);
             bemplot_2D_modelIntersections_app(app.CrossSectionDisplay, model, obs);
 

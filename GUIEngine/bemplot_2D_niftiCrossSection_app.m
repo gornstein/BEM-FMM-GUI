@@ -2,7 +2,7 @@ function bemplot_2D_niftiCrossSection_app(axis, VT1, info, plane, m)
 %   Valid options for plane are 'xy', 'xz', or 'yz'
 %   m (in meters) is the z coord in case of 'xy', y coord in case of 'xz', x coord in case of 'yz'
 
-m = m*1e+3; %converts m to mm
+m = m*1e3; %converts m to mm
 
 N1N2N3      = info.ImageSize;
 d1d2d3      = info.PixelDimensions;
