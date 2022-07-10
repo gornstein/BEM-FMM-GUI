@@ -5,16 +5,16 @@ function updatecoilnormaltosolverdisplay(app)
 if ~isempty(app.planes) % if the planes are empty then there will be nothing to display to
 
     %HARDCODED
-    displayDist = 3; % Distance from which the line will be displayed in cm from the surface of the plane
-    bounds = 10; % Bounds for what will be displayed (will not display things out of bounds) along the plane from the center in cm
+    displayDist = 30; % Distance from which the line will be displayed in mm from the surface of the plane
+    bounds = 100; % Bounds for what will be displayed (will not display things out of bounds) along the plane from the center in mm
 
-    coilPos = [app.MatrixField14.Value, app.MatrixField24.Value, app.MatrixField34.Value]; % Coil location in cm
+    coilPos = [app.MatrixField14.Value, app.MatrixField24.Value, app.MatrixField34.Value]; % Coil location in mm
     rotMat = [app.MatrixField11.Value, app.MatrixField12.Value, app.MatrixField13.Value;
         app.MatrixField21.Value, app.MatrixField22.Value, app.MatrixField23.Value;
         app.MatrixField31.Value, app.MatrixField32.Value, app.MatrixField33.Value];
     coilNorm = (rotMat * [0; 0; -1])'; % normal vector for coil's direction
 
-    planeCenter = app.planeCentersComp{1,app.processingPlaneidx}; % Plane center location in cm
+    planeCenter = app.planes{app.selectedplaneidx}{3}(1:3)*1e3; % Plane center location in mm (from m to mm)
 
 
     switch app.planes{app.processingPlaneidx}{2}
@@ -31,7 +31,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
             endPoint = [];
 
             % find the first point to fall within the bounds
-            for (i = 0:0.01:100)
+            for (i = 0:1:10000)
                 currentPos = coilPos+coilNorm*i;
 
                 % if the point falls within the bounds
@@ -44,7 +44,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
             if (~isempty(startPoint))
                 % find the next point along the vector to fall out of the
                 % bounds if any point was within the bounds
-                for (j = 0:0.01:100)
+                for (j = 0:1:10000)
                     currentPos = startPoint + coilNorm*j;
 
                     % if the point falls outside of the bounds
@@ -93,7 +93,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
             endPoint = [];
 
             % find the first point to fall within the bounds
-            for (i = 0:0.01:100)
+            for (i = 0:1:10000)
                 currentPos = coilPos+coilNorm*i;
 
                 % if the point falls within the bounds
@@ -106,7 +106,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
             if (~isempty(startPoint))
                 % find the next point along the vector to fall out of the
                 % bounds if any point was within the bounds
-                for (j = 0:0.01:100)
+                for (j = 0:1:10000)
                     currentPos = startPoint + coilNorm*j;
 
                     % if the point falls outside of the bounds
@@ -155,7 +155,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
             endPoint = [];
 
             % find the first point to fall within the bounds
-            for (i = 0:0.01:100)
+            for (i = 0:1:10000)
                 currentPos = coilPos+coilNorm*i;
 
                 % if the point falls within the bounds
@@ -168,7 +168,7 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
             if (~isempty(startPoint))
                 % find the next point along the vector to fall out of the
                 % bounds if any point was within the bounds
-                for (j = 0:0.01:100)
+                for (j = 0:1:10000)
                     currentPos = startPoint + coilNorm*j;
 
                     % if the point falls outside of the bounds
@@ -214,29 +214,29 @@ if ~isempty(app.planes) % if the planes are empty then there will be nothing to 
     % endPoint is the last point of the coil normal that falls within
     % the bounds dictated by displayDist and bounds
     
-    plot(app.SolverDisplay, coilIntersection(1)*1e-2, coilIntersection(2)*1e-2, 'Color', 'red', 'Marker', 'o', 'MarkerSize', 10, 'LineWidth', 10);
-    plot(app.SolverDisplay, [startPoint(1)*1e-2, endPoint(1)*1e-2], [startPoint(2)*1e-2, endPoint(2)*1e-2], 'Color', 'blue', 'LineWidth', 4);
+    plot(app.SolverDisplay, coilIntersection(1), coilIntersection(2), 'Color', 'red', 'Marker', 'o', 'MarkerSize', 10, 'LineWidth', 10);
+    plot(app.SolverDisplay, [startPoint(1), endPoint(1)], [startPoint(2), endPoint(2)], 'Color', 'blue', 'LineWidth', 4);
 
 
-    userPointX = app.PointXValEditField.Value;
-    userPointY = app.PointYValEditField.Value;
-    userPointZ = app.PointZValEditField.Value;
+    userPointX = app.PointXValEditField.Value; % mm
+    userPointY = app.PointYValEditField.Value; % mm
+    userPointZ = app.PointZValEditField.Value; % mm
 
     % Plots the user's point and sets the axis labels for the solver
     % display
     switch app.planes{app.processingPlaneidx}{2}
         case 'xy'
-            plot(app.SolverDisplay, userPointX*1e-2, userPointY*1e-2, Color = 'green', Marker= '*', MarkerSize=10);
-            app.SolverDisplay.XLabel.String = 'X (m)';
-            app.SolverDisplay.YLabel.String = 'Y (m)';
+            plot(app.SolverDisplay, userPointX, userPointY, Color = 'green', Marker= '*', MarkerSize=10);
+            app.SolverDisplay.XLabel.String = 'X (mm)';
+            app.SolverDisplay.YLabel.String = 'Y (mm)';
         case 'xz'
-            plot(app.SolverDisplay, userPointX*1e-2, userPointZ*1e-2, Color = 'green', Marker= '*', MarkerSize=10);
-            app.SolverDisplay.XLabel.String = 'X (m)';
-            app.SolverDisplay.YLabel.String = 'Z (m)';
+            plot(app.SolverDisplay, userPointX, userPointZ, Color = 'green', Marker= '*', MarkerSize=10);
+            app.SolverDisplay.XLabel.String = 'X (mm)';
+            app.SolverDisplay.YLabel.String = 'Z (mm)';
         case 'yz'
-            plot(app.SolverDisplay, userPointY*1e-2, userPointZ*1e-2, Color = 'green', Marker= '*', MarkerSize=10);
-            app.SolverDisplay.XLabel.String = 'Y (m)';
-            app.SolverDisplay.YLabel.String = 'Z (m)';
+            plot(app.SolverDisplay, userPointY, userPointZ, Color = 'green', Marker= '*', MarkerSize=10);
+            app.SolverDisplay.XLabel.String = 'Y (mm)';
+            app.SolverDisplay.YLabel.String = 'Z (mm)';
     end
 end
 end
