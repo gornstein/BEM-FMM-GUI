@@ -68,7 +68,7 @@ function [recommendedLimits] = bemplot_2D_planeField_app(axis, obsPlane, fieldTo
     end
     
     %% Plot
-    [C, h]          = contourf(axis, a, b, reshape(temp, length(a), length(b)), levels);
+    [C, h]          = contourf(axis, a*1e3, b*1e3, reshape(temp, length(a), length(b)), levels);
     h.LevelList     = tick*round(h.LevelList/tick);
     
     recommendedLimits.XLim = [min(a) max(a)];

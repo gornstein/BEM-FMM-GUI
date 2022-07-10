@@ -45,7 +45,7 @@ transMatrix = [app.MatrixField11.Value, app.MatrixField12.Value, app.MatrixField
     app.MatrixField21.Value, app.MatrixField22.Value, app.MatrixField23.Value, app.MatrixField24.Value;
     app.MatrixField31.Value, app.MatrixField32.Value, app.MatrixField33.Value, app.MatrixField34.Value;
     app.MatrixField41.Value, app.MatrixField42.Value, app.MatrixField43.Value, app.MatrixField44.Value];
-    transMatrix(1:3,4) = transMatrix(1:3,4)*1e-2;
+    transMatrix(1:3,4) = transMatrix(1:3,4)*1e-3;
 coil = bemfmm_positionCoilT(coil, transMatrix);
 
 disp('Coil Positioned');
