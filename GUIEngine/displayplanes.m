@@ -51,7 +51,12 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
             planeWidth   = delta*1e3; % m to mm
             pointDensity = 300/planeWidth;
             obs = bemfmm_makeObsPlane(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity);
+            try
             bemplot_2D_niftiCrossSection_app(app.CrossSectionDisplay, app.niftidata.VT1, app.niftidata.info, 'xy', Z);
+            catch
+                throwErrorPopup(app, 'Your plane is outside of the head and thus nothing could be displayed. Please place your plane within the head.', 'Error');
+                return;
+            end
             brighten(app.CrossSectionDisplay, 0.3);
             bemplot_2D_modelIntersections_app(app.CrossSectionDisplay, model, obs);
 
@@ -76,7 +81,12 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
             planeWidth   = delta*1e3; % m to mm
             pointDensity = 300/planeWidth;
             obs = bemfmm_makeObsPlane(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity);
+            try
             bemplot_2D_niftiCrossSection_app(app.CrossSectionDisplay, app.niftidata.VT1, app.niftidata.info, 'xz', Y);
+            catch
+                throwErrorPopup(app, 'Your plane is outside of the head and thus nothing could be displayed. Please place your plane within the head.', 'Error');
+                return;
+            end
             brighten(app.CrossSectionDisplay, 0.3);
             bemplot_2D_modelIntersections_app(app.CrossSectionDisplay, model, obs);
 
@@ -101,7 +111,12 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
             planeWidth   = delta*1e3; % m to mm
             pointDensity = 300/planeWidth;
             obs = bemfmm_makeObsPlane(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity);
+            try
             bemplot_2D_niftiCrossSection_app(app.CrossSectionDisplay, app.niftidata.VT1, app.niftidata.info, 'yz', X);
+            catch
+                throwErrorPopup(app, 'Your plane is outside of the head and thus nothing could be displayed. Please place your plane within the head.', 'Error');
+                return;
+            end
             brighten(app.CrossSectionDisplay, 0.3);
             bemplot_2D_modelIntersections_app(app.CrossSectionDisplay, model, obs);
 
