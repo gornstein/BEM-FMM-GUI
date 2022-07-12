@@ -1,4 +1,4 @@
-function [intersectionTraces] = bemplot_2D_modelIntersections_app(axis, model, obsPlane, options)
+function [intersectionTraces] = bemplot_2D_modelIntersections_app2(axis, model, obsPlane, options)
     
     numTissues = length(model.tissue);
     
@@ -51,7 +51,7 @@ function [intersectionTraces] = bemplot_2D_modelIntersections_app(axis, model, o
             edges           = EInter{m};             %   this is for the contour
             points          = PInter{m};
             points(:, isAxisAligned) = [];
-            patch(axis, 'Faces', edges, 'Vertices', points, 'EdgeColor', color(m, :), 'LineWidth', 2.0);    %   this is contour plot
+            patch(axis, 'Faces', edges, 'Vertices', points*1e3, 'EdgeColor', color(m, :), 'LineWidth', 2.0);    %   this is contour plot
         end
         
     else % Otherwise, project the traces onto the plane using the plane center as the origin
@@ -71,7 +71,7 @@ function [intersectionTraces] = bemplot_2D_modelIntersections_app(axis, model, o
             x = dot(x_temp, tempXVec, 2);
 %             x = vecnorm(points - y.*tempUpVec, 2, 2); % Magnitude perpendicular to plane up vector
             points = [x y];
-            patch(axis, 'Faces', edges, 'Vertices', points, 'EdgeColor', color(m, :), 'LineWidth', 2.0);    %   this is contour plot
+            patch(axis, 'Faces', edges, 'Vertices', points*1e3, 'EdgeColor', color(m, :), 'LineWidth', 2.0);    %   this is contour plot
         end  
     end
 end
