@@ -32,12 +32,12 @@ end
 
 if (strcmp(app.VectorfromcoilSwitch.Value, 'On'))
     %   display the vector showing the coil direction
-    displaycoilnormalvector(app, rotMatrix, transMatrix);
+    app.coilnormalline = displaycoilnormalvector(app.CoilDisplay, rotMatrix, transMatrix);
 end
 
 if (strcmp(app.FieldVectorSwitch.Value, 'On'))
     %   display the vector from the origin to the coil's translation location
-    displaycoilfieldlines(app, rotMatrix,transMatrix);
+    app.coilfieldline = displaycoilfieldlines(app.CoilDisplay, rotMatrix,transMatrix);
 end
 
 %Makarov's function used to display the coil
