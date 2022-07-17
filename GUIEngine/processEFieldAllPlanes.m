@@ -133,7 +133,7 @@ for n = 1:numberOfPlanes
 end
 
 app.PlaneSelectionDropDown.Visible = true;
-app.PlaneSelectionDropDownLabel.Visible = true;
+app.PlaneSelectionLabel.Visible = true;
 
 disp('DONE');
 end
