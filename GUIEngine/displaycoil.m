@@ -40,8 +40,9 @@ if (strcmp(app.FieldVectorSwitch.Value, 'On'))
     app.coilfieldline = displaycoilfieldlines(app.CoilDisplay, rotMatrix,transMatrix);
 end
 
-%Makarov's function used to display the coil
-bemf1_graphics_coil_CAD_app(app, Coil.P, Coil.t, 1);
+% Display the coil
+% app.coillight = camlight(app.CoilDisplay);
+[app.coilpatch] = bemf1_graphics_coil_CAD_app(app.CoilDisplay, Coil.P, Coil.t, 1);
 
 %% Delete prior lines/intersection points from the CrossSectionDisplay
 if (~isempty(app.planes))
