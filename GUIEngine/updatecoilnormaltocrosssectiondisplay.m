@@ -1,4 +1,7 @@
 function updatecoilnormaltocrosssectiondisplay(app)
+
+%% OUTDATED
+
 if ~isempty(app.planes) % if the planes are empty then there will be nothing to display to
     %HARDCODED
     displayDist = 30; % Distance from which the line will be displayed in mm from the surface of the plane
