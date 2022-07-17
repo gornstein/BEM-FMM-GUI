@@ -149,7 +149,7 @@ app.SolverDisplay.YLim = lims.YLim;
 colorbar(app.SolverDisplay,"north");
 
 % Draw
-updatecoilnormaltosolverdisplay(app);
+% updatecoilnormaltosolverdisplay(app); OUTDATED
 
 app.PlaneSelectionDropDown.Visible = true;
 

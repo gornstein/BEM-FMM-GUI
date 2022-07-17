@@ -1,4 +1,7 @@
 function updateuserpointcrosssectiondisplay(app)
+
+%% OUTDATED
+
 %%  Displays the user's point as dictated by the app.PointValEditFields (every unit in mm)
 
 if ~isempty(app.planes)

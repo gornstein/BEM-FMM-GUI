@@ -1,4 +1,6 @@
-function updatecoilnormaltosolverdisplay(app)
+function updatecoilnormaltosolverdisplay(app) 
+
+%% OUTDATED
 
 %%  FIND THE START AND END POINT FOR THE COIL NORMAL WITHIN RANGE AND THE INTERSECTION 
 % BETWEEN THE COIL NORMAL AND THE TARGET PLANE IF THEY EXIST
