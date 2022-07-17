@@ -20,6 +20,7 @@ P = app.meshList{ind1}.Points; % mm
 str.EdgeColor = 'none'; str.FaceColor = [1 0.75 0.65]; str.FaceAlpha = 1.0;
 
 %final plotting
-bemf2_graphics_base_app(app, P, t0, str);
+app.brainlight = camlight(app.CoilDisplay);
+app.brainpatch = bemf2_graphics_base_app(app.CoilDisplay, P, t0, str);
 
 end
