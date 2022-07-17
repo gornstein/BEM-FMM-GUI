@@ -5,7 +5,6 @@ function displaycoil(app)
 delete(app.coilpatch);
 delete(app.coilnormalline);
 delete(app.coilfieldline);
-delete(app.coillight);
 
 %Loads Coil
 Coil = app.coil;
@@ -41,7 +40,6 @@ if (strcmp(app.FieldVectorSwitch.Value, 'On'))
 end
 
 % Display the coil
-% app.coillight = camlight(app.CoilDisplay);
 [app.coilpatch] = bemf1_graphics_coil_CAD_app(app.CoilDisplay, Coil.P, Coil.t, 1);
 
 %% Delete prior lines/intersection points from the CrossSectionDisplay
