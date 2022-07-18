@@ -149,8 +149,11 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
         [app.niftidisplaydata.coilcenterline, app.niftidisplaydata.centerlineintersection] = updatecoilnormalonplane(app.CrossSectionDisplay, planeOrientation, planeCenter, transformationMatrix, rotationMatrix);
     end
 
-    %% Display the user's point if it exists
-    updateuserpointcrosssectiondisplay(app);
+    % Update user's point on the crosssectiondisplay
+    if (~isempty(app.planes))
+        delete(app.niftidisplaydata.userpoint);
+        app.niftidisplaydata.userpoint = addpointto2Ddisplay(app.CrossSectionDisplay, [app.PointXValEditField.Value, app.PointYValEditField.Value, app.PointZValEditField.Value], app.planes{app.selectedplaneidx}{2});
+    end
     axis(app.CrossSectionDisplay, 'equal');
 
 end
