@@ -1,9 +1,5 @@
-function displaybrain(app)
+function [brainPatch, light] = displaybrain(app, axis)
 %%  The function called to display the brain figure
-
-% Clears prior brain image
-delete(app.brainpatch);
-delete(app.brainlight);
 
 %   Assume that dropdown has been populated from internal names
 %   Assume that we are saving internal names as app.meshInternalNames
@@ -20,7 +16,6 @@ P = app.meshList{ind1}.Points; % mm
 str.EdgeColor = 'none'; str.FaceColor = [1 0.75 0.65]; str.FaceAlpha = 1.0;
 
 %final plotting
-app.brainlight = camlight(app.CoilDisplay);
-app.brainpatch = bemf2_graphics_base_app(app.CoilDisplay, P, t0, str);
+brainPatch = bemf2_graphics_base_app(axis, P, t0, str);
 
 end
