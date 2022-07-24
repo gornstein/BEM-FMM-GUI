@@ -1,5 +1,5 @@
 function additionalUIInit(app)
-        % Create ExportingTab
+        % Create TestingTab
             app.TestingTab = uitab(app.WindowTabGroup);
             app.TestingTab.Title = 'Testing';
             app.TestingTab.BackgroundColor = [0.7608 0.8196 0.7608];
