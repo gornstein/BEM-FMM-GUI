@@ -1,4 +1,4 @@
-function [brainPatch, light] = displaybrain(app, axis)
+function brainPatch = displaybrain(app, axis)
 %%  The function called to display the brain figure
 
 %   Assume that dropdown has been populated from internal names

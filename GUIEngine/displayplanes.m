@@ -25,18 +25,13 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
     cla(app.CrossSectionDisplay);
 
     %% Assemble the model
-    %   model = bemfmm_assembleModel('tissue_index.txt');
 
-    load("CombinedMesh.mat");
-    %     May not need any of this
     model.P = app.mesh.P*1e3; % mm
     model.t = app.mesh.t;
     model.normals = app.mesh.normals;
     model.Center = app.mesh.Center; % m
     model.Area = app.mesh.Area;
     model.Indicator = app.mesh.Indicator;
-
-    %   Need to make this abstract
     model.tissue = app.meshInternalNames;
 
 
