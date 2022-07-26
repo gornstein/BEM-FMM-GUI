@@ -6,8 +6,8 @@ if (~isempty(app.planes))
 
     % Display the coil's centerline and intersection point to the
     % CrossSectionDisplay
-    planeOrientation = app.planes{app.selectedplaneidx}{2};
-    planeCenter = app.planes{app.selectedplaneidx}{3}(1:3)*1e3; % mm
+    planeOrientation = app.planes{app.selectedplaneidx}.direction;
+    planeCenter = app.planes{app.selectedplaneidx}.position*1e3; % mm
     transformationMatrix = [app.MatrixField14.Value, app.MatrixField24.Value, app.MatrixField34.Value]; % Coil location in mm
     rotationMatrix = [app.MatrixField11.Value, app.MatrixField12.Value, app.MatrixField13.Value;
         app.MatrixField21.Value, app.MatrixField22.Value, app.MatrixField23.Value;

@@ -1,13 +1,13 @@
 function updateBrainToCoilDisplay(app)
 
 % Clears prior brain image
-delete(app.brainpatch);
-delete(app.brainlight);
+delete(app.CoilDisplayObjects.brainpatch);
+delete(app.CoilDisplayObjects.light);
 
 % Adds a light to the image
-app.brainlight = camlight(app.CoilDisplay);
+app.CoilDisplayObjects.light = camlight(app.CoilDisplay);
 
 % Displays the new image
-app.brainpatch = displaybrain(app, app.CoilDisplay);
+app.CoilDisplayObjects.brainpatch = displaybrain(app, app.CoilDisplay);
 
 end

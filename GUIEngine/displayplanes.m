@@ -4,12 +4,12 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
 
     %%  Defines the three planes
     %   Getting coords for field planes
-    X = app.planes{app.selectedplaneidx}{3}(1);  %   X-Coord of the plane's center (m)
-    Y = app.planes{app.selectedplaneidx}{3}(2);  %   Y-Coord of the plane's center (m)
-    Z = app.planes{app.selectedplaneidx}{3}(3);  %   Z-Coord of the plane's center (m)
+    X = app.planes{app.selectedplaneidx}.position(1);  %   X-Coord of the plane's center (m)
+    Y = app.planes{app.selectedplaneidx}.position(2);  %   Y-Coord of the plane's center (m)
+    Z = app.planes{app.selectedplaneidx}.position(3);  %   Z-Coord of the plane's center (m)
 
     %%  Defines aspects for field planes
-    delta = app.planes{app.selectedplaneidx}{3}(4)/2;  %   half of plane width (m)
+    delta = app.planes{app.selectedplaneidx}.width/2;  %   half of plane width (m)
     xmin = X - delta;   % Cross-section left edge (m)
     xmax = X + delta;   % Cross-section right edge (m)
     ymin = Y - delta;   % Cross-section posterior edge (m)
@@ -40,7 +40,7 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
     model.tissue = app.meshInternalNames;
 
 
-    switch app.planes{app.selectedplaneidx}{2}
+    switch app.planes{app.selectedplaneidx}.direction
         case 'xy'
 
             % Parameters for plane
@@ -139,8 +139,8 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
 
         % Display the coil's centerline and intersection point to the
         % CrossSectionDisplay
-        planeOrientation = app.planes{app.selectedplaneidx}{2};
-        planeCenter = app.planes{app.selectedplaneidx}{3}(1:3)*1e3; % mm
+        planeOrientation = app.planes{app.selectedplaneidx}.direction;
+        planeCenter = app.planes{app.selectedplaneidx}.position*1e3; % mm
         transformationMatrix = [app.MatrixField14.Value, app.MatrixField24.Value, app.MatrixField34.Value]; % Coil location in mm
         rotationMatrix = [app.MatrixField11.Value, app.MatrixField12.Value, app.MatrixField13.Value;
             app.MatrixField21.Value, app.MatrixField22.Value, app.MatrixField23.Value;
@@ -152,7 +152,7 @@ if (~isempty(app.planes) & (app.selectedplaneidx <= length(app.planes)))
     % Update user's point on the crosssectiondisplay
     if (~isempty(app.planes))
         delete(app.niftidisplaydata.userpoint);
-        app.niftidisplaydata.userpoint = addpointto2Ddisplay(app.CrossSectionDisplay, [app.PointXValEditField.Value, app.PointYValEditField.Value, app.PointZValEditField.Value], app.planes{app.selectedplaneidx}{2});
+        app.niftidisplaydata.userpoint = addpointto2Ddisplay(app.CrossSectionDisplay, [app.PointXValEditField.Value, app.PointYValEditField.Value, app.PointZValEditField.Value], app.planes{app.selectedplaneidx}.direction);
     end
     axis(app.CrossSectionDisplay, 'equal');
 

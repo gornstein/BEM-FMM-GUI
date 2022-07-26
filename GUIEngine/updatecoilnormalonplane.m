@@ -12,13 +12,6 @@ function [displayLine, displayIntersection] = updatecoilnormalonplane(axis, plan
     displayDist = 30; % Distance from which the line will be displayed in mm from the surface of the plane
     bounds = 100; % Bounds for what will be displayed (will not display things out of bounds) along the plane from the center in mm
 
-%     coilPos = [app.MatrixField14.Value, app.MatrixField24.Value, app.MatrixField34.Value]; % Coil location in mm
-%     rotMat = [app.MatrixField11.Value, app.MatrixField12.Value, app.MatrixField13.Value;
-%         app.MatrixField21.Value, app.MatrixField22.Value, app.MatrixField23.Value;
-%         app.MatrixField31.Value, app.MatrixField32.Value, app.MatrixField33.Value];
-%     planeCenter = app.planes{app.selectedplaneidx}{3}(1:3)*1e3; % Plane center location in mm (from m to mm)
-
-
     coilPos = translationMatrix; % coil location
     coilNorm = (rotationMatrix * [0; 0; -1])'; % normal vector for coil's direction
 

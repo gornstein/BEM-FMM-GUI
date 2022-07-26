@@ -1,8 +1,8 @@
 function [planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity] = observationSurfaceParamsApp(app)
 
-planeCenter = app.planes{app.selectedplaneidx}{3}(1:3)*1e-2;
-planeAxis = app.planes{app.selectedplaneidx}{2};
-planeWidth = app.planes{app.selectedplaneidx}{3}(4)*1e-2;
+planeCenter = app.planes{app.selectedplaneidx}.position*1e-2;
+planeAxis = app.planes{app.selectedplaneidx}.direction;
+planeWidth = app.planes{app.selectedplaneidx}.width*1e-2;
 planeHeight = planeWidth;
 pointDensity = 300/planeWidth; % As it was in v0.4, might change to a non scaling method
 

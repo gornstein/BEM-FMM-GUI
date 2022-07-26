@@ -12,10 +12,10 @@ i = length(app.planes);
 numberOfPlanes = i;
 
 for n = 1:i
-    planeWidth(n) = app.planes{n}{3}(4);
+    planeWidth(n) = app.planes{n}.width;
     planeHeight(n) = planeWidth(n);
-    planeAxis{:} = app.planes{n}{2};
-    planeCenter(n,:) = app.planes{n}{3}(1:3);
+    planeAxis{:} = app.planes{n}.direction;
+    planeCenter(n,:) = app.planes{n}.position;
     pointDensity(n) = 300/planeWidth(n);
     
     if strcmp(planeAxis{1},'xy') == 1
