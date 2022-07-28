@@ -1,40 +1,35 @@
-function [coilPatch, coilNormalLineObj, coilFieldLineObj] = displaycoil(app, axis)
-%%  The function called to display the coil
+function [coilPatch, coilNormalLineObj, coilFieldLineObj] = displaycoil(axis, coil, matrix, coilNormal, coilField)
+%%  The function called to display the coil after transformations on the axis specified
+% axis: the axis to display onto
+% coil: a struct for the coil's mesh containing fields P and t where P contains the points in display units and t contains the triangles 
+% matrix: the 4x4 matrix (in display units)
+% coilNormal: a boolean value that determines whether the coil normal line is displayed 
+% coilField: a boolean value that determines whether the coil normal field is displayed 
+% coilPatch: the display patch object for the coil
+% coilNormalLineObject: the display line object for the coil's normal line
+% coilFieldLineObj: the display line object for the coil's field line
 
-%Loads Coil
-Coil = app.coil;
-CoilP = Coil.P;
+CoilP = coil.P;
+CoilT = coil.t;
 
-%   3x3 Rotation Matrix
-rotMatrix = [app.MatrixField11.Value, app.MatrixField12.Value, app.MatrixField13.Value;
-    app.MatrixField21.Value, app.MatrixField22.Value, app.MatrixField23.Value;
-    app.MatrixField31.Value, app.MatrixField32.Value, app.MatrixField33.Value];
-
-%   1x3 Translation Matrix
-transMatrix = [app.MatrixField14.Value, app.MatrixField24.Value, app.MatrixField34.Value];
-
-%   Scale Matrix (m to mm)
-scaleMatrix = [1000 0 0;
-    0 1000 0;
-    0 0 1000];
-
-%   Apply the rotations and transformation to the coil
-for j = 1:size(CoilP,1)
-    transformedPoint = scaleMatrix * rotMatrix * CoilP(j,:)' + transMatrix';
-    Coil.P(j,:) = transformedPoint';
+for j = 1:size(CoilP, 1)
+    point = [CoilP(j, :) 1]';
+    transformedPoint = matrix * point;
+    CoilP(j,:) = transformedPoint(1:3)';
 end
 
-if (strcmp(app.VectorfromcoilSwitch.Value, 'On'))
+rotMatrix = matrix(1:3, 1:3);
+transMatrix = matrix(1:3, 4)';
+
+if (coilNormal)
     %   display the vector showing the coil direction
     coilNormalLineObj = displaycoilnormalvector(axis, rotMatrix, transMatrix);
 end
 
-if (strcmp(app.FieldVectorSwitch.Value, 'On'))
+if (coilField)
     %   display the vector from the origin to the coil's translation location
     coilFieldLineObj = displaycoilfieldlines(axis, rotMatrix,transMatrix);
 end
 
-% Display the coil
-coilPatch = bemf1_graphics_coil_CAD_app(axis, Coil.P, Coil.t, 1);
-
-end
+% display the coil
+coilPatch = bemf1_graphics_coil_CAD_app(axis, CoilP, CoilT, 1);
