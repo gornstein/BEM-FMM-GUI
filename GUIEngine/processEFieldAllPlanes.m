@@ -136,4 +136,13 @@ app.PlaneSelectionDropDown.Visible = true;
 app.PlaneSelectionLabel.Visible = true;
 
 disp('DONE');
+
+%Copy all of the content from the CoilDisplay to the CoilPPDisplay
+CoilDisplayChildren = app.CoilDisplay.Children; 
+% Copy all ax1 objects to axis 2
+copyobj(CoilDisplayChildren, app.CoilPPDisplay);
+
+updatePlanesForPostProcessingTab(app) % display the planes to the CrossSectionPPDisplay
+
+
 end
