@@ -141,8 +141,10 @@ disp('DONE');
 CoilDisplayChildren = app.CoilDisplay.Children; 
 % Copy all ax1 objects to axis 2
 copyobj(CoilDisplayChildren, app.CoilPPDisplay);
+axis(app.CoilPPDisplay, "equal");
 
 updatePlanesForPostProcessingTab(app) % display the planes to the CrossSectionPPDisplay
+axis(app.CrossSectionPPDisplay, "equal");
 
 
 end
