@@ -28,7 +28,7 @@ catch exception
 end
 
 % Assemble the model
-model = bemfmm_assembleModel('tissue_index.txt');
+model = app.model;
 model = bemfmm_computeModelIntegrals(model, 4);
 model = bemfmm_assignDefaultModelConductivities(model, 0); % Kind of a placeholder
 
@@ -143,8 +143,11 @@ CoilDisplayChildren = app.CoilDisplay.Children;
 copyobj(CoilDisplayChildren, app.CoilPPDisplay);
 axis(app.CoilPPDisplay, "equal");
 
-updatePlanesForPostProcessingTab(app) % display the planes to the CrossSectionPPDisplay
+updatePlanesForPostProcessingTab(app); % display the planes to the CrossSectionPPDisplay
 axis(app.CrossSectionPPDisplay, "equal");
+
+updateSurfaceDisplay(app, solution); % display the surface EField to the SurfaceDisplay
+axis(app.SurfaceDisplay, "equal");
 
 
 end

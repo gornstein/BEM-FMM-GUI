@@ -9,13 +9,8 @@ if (~isempty(app.planes) && (app.selectedplaneidx <= length(app.planes)))
     width = app.planes{app.selectedplaneidx}.width; % m
     direction = app.planes{app.selectedplaneidx}.direction;
 
-    model.P = app.mesh.P*1e3; % mm
-    model.t = app.mesh.t;
-    model.normals = app.mesh.normals;
-    model.Center = app.mesh.Center; % m
-    model.Area = app.mesh.Area;
-    model.Indicator = app.mesh.Indicator;
-    model.tissue = app.meshInternalNames;
+    model = app.model;
+    model.P = model.P .* 1000;
 
     displayplanes(app.CrossSectionDisplay, center, width, direction, model, app.niftidata);
     brighten(app.CrossSectionDisplay, 0.3);

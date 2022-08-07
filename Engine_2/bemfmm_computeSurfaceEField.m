@@ -1,14 +1,27 @@
-function [EPri, ESec, EDisc] = bemfmm_computeSurfaceEField(coil, model, solution, constants, obsOptions)
+function [EPri, ESec, EDiscin, EDisco] = bemfmm_computeSurfaceEField(model, solution)
+% coil is the 
+% EPri is the primary field from the coil acting on the model
+% ESec is the secondary field from the surface charges acting on their own model
+% EDiscin is the discontinuous component of the E-Field just inside a surface
+% EDisco is the discontinuous component of the E-Field just outside a surface
+% Total electric field just inside a compartment is equal to EPri + ESec + EDiscin
+% Total electric field just outside a compartment is equal to EPri + ESec + EDisco
 
-%bemf4_surface_field_electric_subdiv(c, P, t, Area, mode, modeArg, prec) 
+% c is charge density which should come from solution input
+% P, t, area, and normals are from the model mesh
+C = solution.c;
+P = model.P;
+t = model.t;
+Area = model.Area;
+normals = model.normals;
 
 %%  Compute surface electric fields
 %   Topological low-pass solution filtering (repeat if necessary)
 % C = (c.*Area + sum(c(tneighbor).*Area(tneighbor), 2))./(Area + sum(Area(tneighbor), 2));
-[~, Eadd] = bemf4_surface_field_electric_subdiv(C, P, t, Area, 'barycentric', 3, 1e-1);
+[~, ESec] = bemf4_surface_field_electric_subdiv(C, P, t, Area, 'barycentric', 3, 1e-1);
 par = -1;    %      par=-1 -> E-field just inside surface; par=+1 -> E-field just outside surface     
-Ei = Einc + Eadd + par/(2)*normals.*repmat(C, 1, 3);    %   full field
+EDiscin = par/(2)*normals.*repmat(C, 1, 3);    %   full field
 par = +1;    %      par=-1 -> E-field just inside surface; par=+1 -> E-field just outside surface     
-Eo = Einc + Eadd + par/(2)*normals.*repmat(C, 1, 3);    %   full field
+EDisco = par/(2)*normals.*repmat(C, 1, 3);    %   full field
 
 end
