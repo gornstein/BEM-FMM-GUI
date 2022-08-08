@@ -140,6 +140,7 @@ disp('DONE');
 %Copy all of the content from the CoilDisplay to the CoilPPDisplay
 CoilDisplayChildren = app.CoilDisplay.Children; 
 % Copy all ax1 objects to axis 2
+cla(app.CoilPPDisplay);
 copyobj(CoilDisplayChildren, app.CoilPPDisplay);
 axis(app.CoilPPDisplay, "equal");
 

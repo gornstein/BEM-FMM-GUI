@@ -24,4 +24,7 @@ EDiscin = par/(2)*normals.*repmat(C, 1, 3);    %   full field
 par = +1;    %      par=-1 -> E-field just inside surface; par=+1 -> E-field just outside surface     
 EDisco = par/(2)*normals.*repmat(C, 1, 3);    %   full field
 
+
+EPri = solution.EPri;
+
 end

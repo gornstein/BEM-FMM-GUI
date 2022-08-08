@@ -10,7 +10,7 @@ function solution = bemfmm_chargeEngineBase(model, coil, constants, solverOption
     
     
     EincP = bemf3_inc_field_electric(coil.strcoil, P, coil.dIdt, constants.mu0, solverOptions.prec);
-    Einc = 1/3*(EincP(t(:,1)) + EincP(t(:, 2)) + EincP(t(:, 3)));
+    Einc = 1/3*(EincP(t(:,1), :) + EincP(t(:, 2), :) + EincP(t(:, 3), :));
     
     % Matrix RHS
     b = 2 * (contrast.*sum(normals.*Einc, 2));
@@ -21,5 +21,6 @@ function solution = bemfmm_chargeEngineBase(model, coil, constants, solverOption
     solution.c = c;
     solution.residuals = resvec;
     solution.iterations = its;
+    solution.EPri = Einc;
     
 end
