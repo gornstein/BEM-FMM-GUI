@@ -147,7 +147,26 @@ axis(app.CoilPPDisplay, "equal");
 updatePlanesForPostProcessingTab(app); % display the planes to the CrossSectionPPDisplay
 axis(app.CrossSectionPPDisplay, "equal");
 
-updateSurfaceDisplay(app, solution); % display the surface EField to the SurfaceDisplay
+switch app.planes{app.processingPlaneidx}.direction
+    case 'xy'
+        view(app.CoilPPDisplay, 0, 90);
+    case 'xz'
+        view(app.CoilPPDisplay, 0, 0);
+    case 'yz'
+        view(app.CoilPPDisplay, 90, 0);
+end
+
+
+%% Calculating the EFields
+
+model = app.model;
+model.P = model.P .* 1000;
+
+app.solution = solution;
+
+[app.EFieldSolution.EPri, app.EFieldSolution.ESec, app.EFieldSolution.EDiscin, app.EFieldSolution.EDisco] = bemfmm_computeSurfaceEField(model, app.solution); % computes the fields
+
+updateSurfaceDisplay(app); % display the surface EField to the SurfaceDisplay
 axis(app.SurfaceDisplay, "equal");
 
 

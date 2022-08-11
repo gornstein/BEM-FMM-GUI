@@ -1,27 +1,20 @@
-function updateSurfaceDisplay(app, solution)
+function updateSurfaceDisplay(app)
 
 cla(app.SurfaceDisplay); % clears the prior plot
 
-%% Calculating the EFields
-
-model = app.model;
-model.P = model.P .* 1000;
-
-[EPri, ESec, EDiscin, EDisco] = bemfmm_computeSurfaceEField(model, solution); % computes the fields
-
 %% Displaying the surface field
 
+model = app.model;
+model.P = model.P .* 1000; % converting points from m to mm for display
 P = model.P;
 t = model.t;
 Indicator = model.Indicator(:, 1);
 tissuenumber = find(contains(model.tissue, app.SurfaceHeadCompartmentsDropDown.Value)); 
-temp = EDiscin(Indicator == tissuenumber, :) + EPri(Indicator == tissuenumber, :);
+temp = app.EFieldSolution.EDiscin(Indicator == tissuenumber, :) + app.EFieldSolution.EPri(Indicator == tissuenumber, :);
 temp = sqrt(dot(temp, temp, 2));
 FQ = temp;
 
 bemf2_graphics_surf_field_app(app.SurfaceDisplay, P, t, FQ, Indicator(:,1), tissuenumber);
-axis(app.SurfaceDisplay, "equal");
-axis(app.SurfaceDisplay, "tight");
 
 %% Display the coil
 
