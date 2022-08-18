@@ -10,7 +10,7 @@ P = model.P;
 t = model.t;
 Indicator = model.Indicator(:, 1);
 tissuenumber = find(contains(model.tissue, app.SurfaceHeadCompartmentsDropDown.Value)); 
-temp = app.EFieldSolution.EDiscin(Indicator == tissuenumber, :) + app.EFieldSolution.EPri(Indicator == tissuenumber, :);
+temp = app.EFieldSolution.EDiscin(Indicator == tissuenumber, :) + app.EFieldSolution.EPri(Indicator == tissuenumber, :) + app.EFieldSolution.ESec(Indicator == tissuenumber, :);
 temp = sqrt(dot(temp, temp, 2));
 FQ = temp;
 
