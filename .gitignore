@@ -14,3 +14,4 @@ GUIEngine/processEFieldWorkspace.mat
 GUIEngine/tissue_index.txt
 /*.mat
 /Coil/*.mat
+/Coil/testH1Coil1.m
