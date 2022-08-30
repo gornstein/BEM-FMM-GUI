@@ -11,7 +11,7 @@ GUIEngine/coilCAD.mat
 GUIEngine/prev_session.mat
 GUIEngine/tissue_index.txt
 GUIEngine/processEFieldWorkspace.mat
-*/tissue_index.txt
+*\tissue_index.txt
 /tissue_index.txt
 /*.mat
 /Coil/*.mat

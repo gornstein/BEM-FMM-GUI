@@ -10,7 +10,14 @@ P = model.P;
 t = model.t;
 Indicator = model.Indicator(:, 1);
 tissuenumber = find(contains(model.tissue, app.SurfaceHeadCompartmentsDropDown.Value)); 
-temp = app.EFieldSolution.EDiscin(Indicator == tissuenumber, :) + app.EFieldSolution.EPri(Indicator == tissuenumber, :) + app.EFieldSolution.ESec(Indicator == tissuenumber, :);
+
+% Get user's preference for EField location (inside or outside of a layer)
+switch app.SurfaceEFieldLocationSwitch.Value
+    case 'Within Layer'
+        temp = app.EFieldSolution.EDiscin(Indicator == tissuenumber, :) + app.EFieldSolution.EPri(Indicator == tissuenumber, :) + app.EFieldSolution.ESec(Indicator == tissuenumber, :);
+    case 'Outside Layer'
+        temp = app.EFieldSolution.EDisco(Indicator == tissuenumber, :) + app.EFieldSolution.EPri(Indicator == tissuenumber, :) + app.EFieldSolution.ESec(Indicator == tissuenumber, :);
+end
 temp = sqrt(dot(temp, temp, 2));
 FQ = temp;
 
@@ -33,8 +40,8 @@ coilField = strcmp(app.FieldVectorSwitch.Value, 'On'); % sets whether the coil's
 
 transparency = 0.2; % 0 = fully transparent 1 is fully visable
 alpha(coil, transparency);
-alpha(coilnorm, transparency);
-alpha(coilfield, transparency);
+% alpha(coilnorm, transparency);
+% alpha(coilfield, transparency);
 
 
 
