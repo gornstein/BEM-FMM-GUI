@@ -13,7 +13,7 @@ tissuenumber = find(contains(model.tissue, app.SurfaceHeadCompartmentsDropDown.V
 
 % Get user's preference for EField location (inside or outside of a layer)
 switch app.SurfaceEFieldLocationSwitch.Value
-    case 'Within Layer'
+    case 'Inside Layer'
         temp = app.EFieldSolution.EDiscin(Indicator == tissuenumber, :) + app.EFieldSolution.EPri(Indicator == tissuenumber, :) + app.EFieldSolution.ESec(Indicator == tissuenumber, :);
     case 'Outside Layer'
         temp = app.EFieldSolution.EDisco(Indicator == tissuenumber, :) + app.EFieldSolution.EPri(Indicator == tissuenumber, :) + app.EFieldSolution.ESec(Indicator == tissuenumber, :);

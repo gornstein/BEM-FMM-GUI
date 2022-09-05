@@ -2,8 +2,6 @@ function [ ] = bemf2_graphics_surf_field_app(axis, P, t, FQ, Indicator, tissuenu
 %   Surface field graphics:  plot a field quantity FQ at the surface of a
 %   brain compartment with the number "tissuenumber"
 %
-%   Copyright SNM 2017-2020
-
     ind = tissuenumber;                   
     t0  = t(Indicator==ind, :);
     % FQ0 = FQ

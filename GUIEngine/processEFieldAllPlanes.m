@@ -104,56 +104,62 @@ obsOptions.relativeIntegrationRadius = 5;
 % EMagLine_sec = vecnorm(obs1.FieldESecondary, 2, 2);
 % plot(obs1.argline*1000, EMagLine_sec, '--b', 'LineWidth', 2);
 
-[planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity, numberOfPlanes] = observationSurfaceParamsAll_app(app);
-% Set some stuff for dropdown
-processingPlanesDD(app);
+if(~isempty(app.planes))
 
-app.EFieldModel = model;
+    [planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity, numberOfPlanes] = observationSurfaceParamsAll_app(app);
+    % Set some stuff for dropdown
+    processingPlanesDD(app);
 
-%% Loop here for planes
-for n = 1:numberOfPlanes
+    app.EFieldModel = model;
 
-    % Make plane, compute neighbor integrals, compute E-field
-    disp(['Making observation plane and computing integrals + fields. Pass ', num2str(n), ' of ', num2str(numberOfPlanes)]);
-    pause(0.2);
-    obs2 = bemfmm_makeObsPlaneAllPlanes(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity, n);
-    
-    % FORTRAN version of computeObsField, faster
-    obs2 = bemfmm_computeObsField_oneshot(obs2, coil, model, solution, constants, obsOptions);
-    
-    % Store obs2 for each iteration
-    app.EFieldObs2{n} = obs2;
-    
-    % setup stuff for plots and store in app
-    app.vecnormObs2{n} = vecnorm(obs2.FieldESecondary+obs2.FieldEPrimary, 2, 2);
+    %% Loop here for planes
+    for n = 1:numberOfPlanes
 
-    % store plane centers
-    app.planeCentersComp{n} = app.planes{n}.position;
+        % Make plane, compute neighbor integrals, compute E-field
+        disp(['Making observation plane and computing integrals + fields. Pass ', num2str(n), ' of ', num2str(numberOfPlanes)]);
+        pause(0.2);
+        obs2 = bemfmm_makeObsPlaneAllPlanes(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity, n);
 
-end
+        % FORTRAN version of computeObsField, faster
+        obs2 = bemfmm_computeObsField_oneshot(obs2, coil, model, solution, constants, obsOptions);
 
-app.PlaneSelectionDropDown.Visible = true;
-app.PlaneSelectionLabel.Visible = true;
+        % Store obs2 for each iteration
+        app.EFieldObs2{n} = obs2;
 
-disp('DONE');
+        % setup stuff for plots and store in app
+        app.vecnormObs2{n} = vecnorm(obs2.FieldESecondary+obs2.FieldEPrimary, 2, 2);
 
-%Copy all of the content from the CoilDisplay to the CoilPPDisplay
-CoilDisplayChildren = app.CoilDisplay.Children; 
-% Copy all ax1 objects to axis 2
-cla(app.CoilPPDisplay);
-copyobj(CoilDisplayChildren, app.CoilPPDisplay);
-axis(app.CoilPPDisplay, "equal");
+        % store plane centers
+        app.planeCentersComp{n} = app.planes{n}.position;
 
-updatePlanesForPostProcessingTab(app); % display the planes to the CrossSectionPPDisplay
-axis(app.CrossSectionPPDisplay, "equal");
+    end
 
-switch app.planes{app.processingPlaneidx}.direction
-    case 'xy'
-        view(app.CoilPPDisplay, 0, 90);
-    case 'xz'
-        view(app.CoilPPDisplay, 0, 0);
-    case 'yz'
-        view(app.CoilPPDisplay, 90, 0);
+    app.PlaneSelectionDropDown.Visible = true;
+    app.PlaneSelectionLabel.Visible = true;
+
+    disp('DONE');
+
+    %% Plot to the PostProcessing Tab
+    % Copy all of the content from the CoilDisplay to the CoilPPDisplay
+    CoilDisplayChildren = app.CoilDisplay.Children;
+    cla(app.CoilPPDisplay);
+    copyobj(CoilDisplayChildren, app.CoilPPDisplay);
+    axis(app.CoilPPDisplay, "equal");
+
+    updatePlanesForPostProcessingTab(app); % display the planes to the CrossSectionPPDisplay
+    axis(app.CrossSectionPPDisplay, "equal");
+
+    % Changing the direction of the CoilPPDisplay to look perpendicular to the
+    % plane that is being examined
+    switch app.planes{app.processingPlaneidx}.direction
+        case 'xy'
+            view(app.CoilPPDisplay, 0, 90);
+        case 'xz'
+            view(app.CoilPPDisplay, 0, 0);
+        case 'yz'
+            view(app.CoilPPDisplay, 90, 0);
+    end
+
 end
 
 
