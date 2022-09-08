@@ -6,8 +6,6 @@ function exportData(app, filepath)
         nodeNames{n} = app.DataExportTree.CheckedNodes(n).Text;
         
     end
-
-    filepath = 'C:\Users\almiles\Documents\TempOutput';
     
     %% Head Model
     if any(strcmp(nodeNames, 'Head Model'))

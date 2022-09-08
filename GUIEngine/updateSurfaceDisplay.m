@@ -9,20 +9,56 @@ model.P = model.P .* 1000; % converting points from m to mm for display
 P = model.P;
 t = model.t;
 Indicator = model.Indicator(:, 1);
-tissuenumber = find(contains(model.tissue, app.SurfaceHeadCompartmentsDropDown.Value)); 
+tissuenumber = find(contains(model.tissue, app.SurfaceHeadCompartmentsDropDown.Value));
 
-% Get user's preference for EField location (inside or outside of a layer)
-switch app.SurfaceEFieldLocationSwitch.Value
-    case 'Inside Layer'
-        temp = app.EFieldSolution.EDiscin(Indicator == tissuenumber, :) + app.EFieldSolution.EPri(Indicator == tissuenumber, :) + app.EFieldSolution.ESec(Indicator == tissuenumber, :);
-    case 'Outside Layer'
-        temp = app.EFieldSolution.EDisco(Indicator == tissuenumber, :) + app.EFieldSolution.EPri(Indicator == tissuenumber, :) + app.EFieldSolution.ESec(Indicator == tissuenumber, :);
+% Get user's preference for EField location and EField source
+if (strcmp(app.SurfaceEFieldLocationSwitch.Value, 'Inside Layer'))
+    switch app.FieldSourceTypeDropDown.Value
+        case 'Total Field'
+            temp = app.EFieldSolution.EPri(Indicator == tissuenumber, :) + app.EFieldSolution.ESec(Indicator == tissuenumber, :) + app.EFieldSolution.EDiscin(Indicator == tissuenumber, :);
+        case 'Primary Field'
+            temp = app.EFieldSolution.EPri(Indicator == tissuenumber, :);
+        case 'Secondary Field'
+            temp = app.EFieldSolution.ESec(Indicator == tissuenumber, :) + app.EFieldSolution.EDiscin(Indicator == tissuenumber, :);
+    end
+else
+    switch app.FieldSourceTypeDropDown.Value
+        case 'Total Field'
+            temp = app.EFieldSolution.EPri(Indicator == tissuenumber, :) + app.EFieldSolution.ESec(Indicator == tissuenumber, :) + app.EFieldSolution.EDisco(Indicator == tissuenumber, :);
+        case 'Primary Field'
+            temp = app.EFieldSolution.EPri(Indicator == tissuenumber, :);
+        case 'Secondary Field'
+            temp = app.EFieldSolution.ESec(Indicator == tissuenumber, :) + app.EFieldSolution.EDisco(Indicator == tissuenumber, :);
+    end
 end
-temp = sqrt(dot(temp, temp, 2));
+
+% Get user's preference for displayed field quantity
+switch app.FieldValueTypeDropDown.Value
+    case 'Total Magnitude'
+        temp = sqrt(dot(temp, temp, 2));
+    case 'Normal Component'
+        temp = dot(temp, model.normals(Indicator == tissuenumber, :), 2);
+    case 'Tangential Component'
+        temp = cross(temp, model.normals(Indicator == tissuenumber, :), 2);
+        temp = sqrt(dot(temp, temp, 2));
+end
+
+
 FQ = temp;
 
-bemf2_graphics_surf_field_app(app.SurfaceDisplay, P, t, FQ, Indicator(:,1), tissuenumber);
+opts = 1;
 
+BrainPatch = bemf2_graphics_surf_field_app(app.SurfaceDisplay, P, t, FQ, Indicator(:,1), tissuenumber, opts);
+low = min(FQ);
+high = max(FQ);
+if (app.SurfaceThresholdLow.Value ~= -1)
+    low = app.SurfaceThresholdLow.Value;
+end
+
+if (app.SurfaceThresholdHigh.Value ~= -1)
+    high = app.SurfaceThresholdHigh.Value;
+end
+app.SurfaceDisplay.CLim = [low high];
 %% Display the coil
 
 coil.P = app.coil.P * 1e3; % scaling the points to mm
@@ -36,12 +72,12 @@ matrix = [app.MatrixField11.Value, app.MatrixField12.Value, app.MatrixField13.Va
 coilNormal = strcmp(app.VectorfromcoilSwitch.Value, 'On'); % sets whether the coil's normal vector will be displayed
 coilField = strcmp(app.FieldVectorSwitch.Value, 'On'); % sets whether the coil's field vector will be displayed
 
+coilNormal = false;
+coilField = false;
 [coil, coilnorm, coilfield] = displaycoil(app.SurfaceDisplay, coil, matrix, coilNormal, coilField);
 
 transparency = 0.2; % 0 = fully transparent 1 is fully visable
 alpha(coil, transparency);
-% alpha(coilnorm, transparency);
-% alpha(coilfield, transparency);
 
 
 

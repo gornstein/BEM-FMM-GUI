@@ -24,11 +24,16 @@ transMatrix = matrix(1:3, 4)';
 if (coilNormal)
     %   display the vector showing the coil direction
     coilNormalLineObj = displaycoilnormalvector(axis, rotMatrix, transMatrix);
+else
+    coilNormalLineObj = [];
 end
+
 
 if (coilField)
     %   display the vector from the origin to the coil's translation location
     coilFieldLineObj = displaycoilfieldlines(axis, rotMatrix,transMatrix);
+else
+    coilFieldLineObj = [];
 end
 
 % display the coil
