@@ -8,8 +8,7 @@ function solution = bemfmm_chargeEngineBase(model, coil, constants, solverOption
     Area     = model.Area;
     EC       = model.EC;
     
-    
-    EincP = bemf3_inc_field_electric(coil.strcoil, P, coil.dIdt, constants.mu0, solverOptions.prec);
+    EincP = bemf3_inc_field_electric_generic(coil, P, constants, solverOptions);
     Einc = 1/3*(EincP(t(:,1), :) + EincP(t(:, 2), :) + EincP(t(:, 3), :));
     
     % Matrix RHS

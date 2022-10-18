@@ -1,5 +1,15 @@
 function processEFieldAllPlanes(app)
 
+%   Requirements for new solver:
+%   1. setup all default behavior
+%       - assemble model, load coil
+%   2. setup the outer coil loop
+%       - position coil, assigning coil stimulus, run solver, solve for
+%       planes, solve for surface field/populate app.EFieldSolutions
+%   3. Display all required data to data displays
+
+%%  SETUP DEFAULT BEHAVIOR
+
 cla(app.SolverDisplay);
 
 clc
@@ -34,143 +44,106 @@ model = bemfmm_assignDefaultModelConductivities(model, 0); % Kind of a placehold
 
 disp('Model Loaded and Assembled');
 
-% Load and position the coil
-coil = bemfmm_loadCoil_app('coil.mat','coilCAD.mat');
+% Load the coil
+baseCoil = bemfmm_loadCoil_app('coil.mat','coilCAD.mat');
 
 disp('Coil Loaded');
 pause(0.4);
-
-% Position and orient coil
-transMatrix = [app.MatrixField11.Value, app.MatrixField12.Value, app.MatrixField13.Value, app.MatrixField14.Value;
-    app.MatrixField21.Value, app.MatrixField22.Value, app.MatrixField23.Value, app.MatrixField24.Value;
-    app.MatrixField31.Value, app.MatrixField32.Value, app.MatrixField33.Value, app.MatrixField34.Value;
-    app.MatrixField41.Value, app.MatrixField42.Value, app.MatrixField43.Value, app.MatrixField44.Value];
-    transMatrix(1:3,4) = transMatrix(1:3,4)*1e-3;
-coil = bemfmm_positionCoilT(coil, transMatrix);
-
-disp('Coil Positioned');
-pause(0.2);
-
-% Assign coil stimulus
-coilCurrent = app.CoilCurrentEditField.Value;
-% coilFreq    = 3000; % coil frequency in hz
-coildIdt    = app.CoildIdtEditField.Value; % 2*pi*coilFreq*coilCurrent
-coil = bemfmm_assignCoilStimulus(coil, coilCurrent, coildIdt);
-
-disp('Coil Stimulus Assigned');
-pause(0.2);
 
 % Parameters for the solver
 solverOptions.prec      = 1e-3;     % FMM precision
 solverOptions.weight    = 1/2;      % Empirically-derived constant
 solverOptions.maxIter   = app.MaximumIterationsEditField.Value;       % Maximum permitted GMRES iterations
 solverOptions.relRes    = app.MinimumResidualEditField.Value;    % GMRES stop criterion
-solution = bemfmm_chargeEngineBase(model, coil, constants, solverOptions);
 
-disp('Finished running charge engine');
-pause(0.4);
+app.solvedmatrices = app.matrices; % stores all coil positions at the time that the solver is run
+app.solvedplanes = app.planes; % makes a copy of the planes being solved for
 
-% % Define observation surface 1: coil centerline
-% % parameters:
-% orig_temp = coil.origin; % named orig_temp to not confuse bem3_line_field_e
-% dirline   = coil.centerlineDirection;
-% distance  = 0.1;                 % Distance (m) that the line should reach from the origin
-% numPoints = 10000;               % Number of points in the line
-% obs1 = bemfmm_makeObsLine_2(orig_temp, dirline, distance, numPoints);
 
-% disp('Finished making observation line');
-% pause(0.2);
+%%  COIL LOOP
+for coilIndex = 1:length(app.matrices)
 
-% Set up options for observation point field evaluation
-obsOptions.prec = 1e-3;
-obsOptions.relativeIntegrationRadius = 5;
+    % Position and orient coil
+    transMatrix = app.matrices{coilIndex};
+    transMatrix(1:3,4) = transMatrix(1:3,4)*1e-3;
+    coil = bemfmm_positionCoilT(baseCoil, transMatrix);
 
-% % Precompute coil fields
-% disp('Precomputing coil fields (observation line integrals)');
-% pause(0.2);
-% tic
-% obs1 = bemfmm_computeObsIntegrals(obs1, model, obsOptions);
-% disp(['Observation line integrals computed in ' num2str(toc) ' s']);
-% 
-% % Compute precise field at coil centerline
-% disp('Computing precise field at coil centerline');
-% pause(0.2);
-% tic
-% obs1 = bemfmm_computeObsField(obs1, coil, model, solution, constants, obsOptions);
-% disp(['Observation line fields computed in ' num2str(toc) 's']);
+    % Assign coil stimulus
+    coilCurrent = app.CoilCurrentEditField.Value;
+    % coilFreq    = 3000; % coil frequency in hz
+    coildIdt    = app.CoildIdtEditField.Value; % 2*pi*coilFreq*coilCurrent
+    coil = bemfmm_assignCoilStimulus(coil, coilCurrent, coildIdt);
 
-% % Placeholder: This will be wrapped into a plot method for the obs line
-% figure;
-% EMagLine_sec = vecnorm(obs1.FieldESecondary, 2, 2);
-% plot(obs1.argline*1000, EMagLine_sec, '--b', 'LineWidth', 2);
+    solution = bemfmm_chargeEngineBase(model, coil, constants, solverOptions);
 
-if(~isempty(app.planes))
+    %% MATERS LATER
+    % % Define observation surface 1: coil centerline
+    % % parameters:
+    % orig_temp = coil.origin; % named orig_temp to not confuse bem3_line_field_e
+    % dirline   = coil.centerlineDirection;
+    % distance  = 0.1;                 % Distance (m) that the line should reach from the origin
+    % numPoints = 10000;               % Number of points in the line
+    % obs1 = bemfmm_makeObsLine_2(orig_temp, dirline, distance, numPoints);
 
-    [planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity, numberOfPlanes] = observationSurfaceParamsAll_app(app);
-    % Set some stuff for dropdown
-    processingPlanesDD(app);
+    % Set up options for observation point field evaluation
+    obsOptions.prec = 1e-3;
+    obsOptions.relativeIntegrationRadius = 5;
 
-    app.EFieldModel = model;
+    %% Calculates planes
+    if(~isempty(app.planes))
+        [planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity, numberOfPlanes] = observationSurfaceParamsAll_app(app);
 
-    %% Loop here for planes
-    for n = 1:numberOfPlanes
+        app.EFieldModel = model;
 
-        % Make plane, compute neighbor integrals, compute E-field
-        disp(['Making observation plane and computing integrals + fields. Pass ', num2str(n), ' of ', num2str(numberOfPlanes)]);
-        pause(0.2);
-        obs2 = bemfmm_makeObsPlaneAllPlanes(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity, n);
+        %% Loop here for planes
+        for n = 1:numberOfPlanes
 
-        % FORTRAN version of computeObsField, faster
-        obs2 = bemfmm_computeObsField_oneshot(obs2, coil, model, solution, constants, obsOptions);
+            % Make plane, compute neighbor integrals, compute E-field
+            disp(['Making observation plane and computing integrals + fields. Pass ', num2str(n), ' of ', num2str(numberOfPlanes)]);
+            pause(0.2);
+            obs2 = bemfmm_makeObsPlaneAllPlanes(planeNormal, planeCenter, planeUp, planeHeight, planeWidth, pointDensity, n);
 
-        % Store obs2 for each iteration
-        app.EFieldObs2{n} = obs2;
+            % FORTRAN version of computeObsField, faster
+            obs2 = bemfmm_computeObsField_oneshot(obs2, coil, model, solution, constants, obsOptions);
 
-        % setup stuff for plots and store in app
-        app.vecnormObs2{n} = vecnorm(obs2.FieldESecondary+obs2.FieldEPrimary, 2, 2);
+            % Store obs2 for each iteration
+            app.EFieldObs2{coilIndex}{n} = obs2;
 
-        % store plane centers
-        app.planeCentersComp{n} = app.planes{n}.position;
+            % setup stuff for plots and store in app
+            app.vecnormObs2{coilIndex}{n} = vecnorm(obs2.FieldESecondary+obs2.FieldEPrimary, 2, 2);
 
+        end
+        % get the full solution structure
+        [EFieldSolution.EPri, EFieldSolution.ESec, EFieldSolution.EDiscin, EFieldSolution.EDisco] = bemfmm_computeSurfaceEField(model, solution); % computes the fields
+        app.EFieldSolution{coilIndex} = EFieldSolution;
     end
 
-    app.PlaneSelectionDropDown.Visible = true;
-    app.PlaneSelectionLabel.Visible = true;
+    %% DISPLAY
 
+    % Set some stuff for dropdown
+    processingPlanesDD(app);
+    app.VolumeCoilSelectionDropDown.Items = app.positions;
+    app.VolumeCoilSelectionDropDown.ItemsData = 1:length(app.positions);
+    app.SurfaceCoilSelectionDropDown.Items = app.positions;
+    app.SurfaceCoilSelectionDropDown.ItemsData = 1:length(app.positions);
     disp('DONE');
 
-    %% Plot to the PostProcessing Tab
-    % Copy all of the content from the CoilDisplay to the CoilPPDisplay
-    CoilDisplayChildren = app.CoilDisplay.Children;
-    cla(app.CoilPPDisplay);
-    copyobj(CoilDisplayChildren, app.CoilPPDisplay);
-    axis(app.CoilPPDisplay, "equal");
+    updatePostProcessingCoilDisplay(app); % update the CoilPPDisplay
+
+    % Plot to the PostProcessing Tab
+    updatePostProcessingCoilDisplay(app);
 
     updatePlanesForPostProcessingTab(app); % display the planes to the CrossSectionPPDisplay
     axis(app.CrossSectionPPDisplay, "equal");
 
-    % Changing the direction of the CoilPPDisplay to look perpendicular to the
-    % plane that is being examined
-    switch app.planes{app.processingPlaneidx}.direction
-        case 'xy'
-            view(app.CoilPPDisplay, 0, 90);
-        case 'xz'
-            view(app.CoilPPDisplay, 0, 0);
-        case 'yz'
-            view(app.CoilPPDisplay, 90, 0);
-    end
-
 end
 
 
-%% Calculating the EFields
+% Calculating the EFields
 
 model = app.model;
 model.P = model.P .* 1000;
 
-app.solution = solution;
-
-[app.EFieldSolution.EPri, app.EFieldSolution.ESec, app.EFieldSolution.EDiscin, app.EFieldSolution.EDisco] = bemfmm_computeSurfaceEField(model, app.solution); % computes the fields
 
 updateSurfaceDisplay(app); % display the surface EField to the SurfaceDisplay
 axis(app.SurfaceDisplay, "equal");

@@ -18,16 +18,41 @@ function coil = bemfmm_positionCoilT(coil, transMatrix)
 
     end
 
-    for i = 1:length(coil.strcoil.Pwire)
-         
 
-        currentPoint = coil.strcoil.Pwire(i,:)';
-        currentPoint(4) = 1;
-        currentPoint = transMatrix * currentPoint;
-        currentPoint(4) = [];
-        currentPoint = currentPoint';
-        coil.strcoil.Pwire(i,:) = currentPoint;
+    if (strcmp(coil.Type, 'curdip'))
+        for i = 1:length(coil.strcoil.Pwire)
 
+
+            currentPoint = coil.strcoil.Pwire(i,:)';
+            currentPoint(4) = 1;
+            currentPoint = transMatrix * currentPoint;
+            currentPoint(4) = [];
+            currentPoint = currentPoint';
+            coil.strcoil.Pwire(i,:) = currentPoint;
+
+        end
+
+    elseif (strcmp(coil.Type, 'magdip'))
+        for i = 1:length(coil.strcoil.positions)
+
+
+            currentPoint = coil.strcoil.positions(i,:)';
+            currentPoint(4) = 1;
+            currentPoint = transMatrix * currentPoint;
+            currentPoint(4) = [];
+            currentPoint = currentPoint';
+            coil.strcoil.positions(i,:) = currentPoint;
+
+            currentPoint = coil.strcoil.directivemoments(i,:)';
+            currentPoint(4) = 0;
+            currentPoint = transMatrix * currentPoint;
+            currentPoint(4) = [];
+            currentPoint = currentPoint';
+            coil.strcoil.directivemoments(i,:) = currentPoint;
+
+        end
+    else
+        error("Incorrect coil typing");
     end
 
 

@@ -10,7 +10,8 @@ load("SurfaceFields.mat");
 % tissueNumber = 7; % WM
 
 tissueNumber = 7; % GM
-srf = SurfaceFields{tissueNumber};
+coilNumber = 1; % selected coil if you've exported multiple
+srf = CoilFields{coilNumber}{tissueNumber};
 
 FQ = dot(srf.innerField, srf.normals, 2); % srf.innerField for inside field and .outerField for field outside surface
 % FQ(FQ<0) = 0; % only positive normal field is plotted

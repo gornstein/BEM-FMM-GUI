@@ -27,4 +27,10 @@ function coil = bemfmm_loadCoil_app(fnamecoil, fnamecoilcad)
     coil.I0 = 0;
     coil.dIdt = 0;
     
+    if (isfield(coil.strcoil, 'directivemoments'))
+        coil.Type = 'magdip';
+    else
+        coil.Type = 'curdip';
+    end
+    
 end
