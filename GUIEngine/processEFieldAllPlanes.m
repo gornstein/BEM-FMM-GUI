@@ -113,30 +113,33 @@ for coilIndex = 1:length(app.matrices)
             app.vecnormObs2{coilIndex}{n} = vecnorm(obs2.FieldESecondary+obs2.FieldEPrimary, 2, 2);
 
         end
-        % get the full solution structure
-        [EFieldSolution.EPri, EFieldSolution.ESec, EFieldSolution.EDiscin, EFieldSolution.EDisco] = bemfmm_computeSurfaceEField(model, solution); % computes the fields
-        app.EFieldSolution{coilIndex} = EFieldSolution;
     end
 
-    %% DISPLAY
-
-    % Set some stuff for dropdown
-    processingPlanesDD(app);
-    app.VolumeCoilSelectionDropDown.Items = app.positions;
-    app.VolumeCoilSelectionDropDown.ItemsData = 1:length(app.positions);
-    app.SurfaceCoilSelectionDropDown.Items = app.positions;
-    app.SurfaceCoilSelectionDropDown.ItemsData = 1:length(app.positions);
-    disp('DONE');
-
-    updatePostProcessingCoilDisplay(app); % update the CoilPPDisplay
-
-    % Plot to the PostProcessing Tab
-    updatePostProcessingCoilDisplay(app);
-
-    updatePlanesForPostProcessingTab(app); % display the planes to the CrossSectionPPDisplay
-    axis(app.CrossSectionPPDisplay, "equal");
+    % get the full solution structure
+    [EFieldSolution.EPri, EFieldSolution.ESec, EFieldSolution.EDiscin, EFieldSolution.EDisco] = bemfmm_computeSurfaceEField(model, solution); % computes the fields
+    app.EFieldSolution{coilIndex} = EFieldSolution;
 
 end
+
+%% DISPLAY
+
+% Set some stuff for dropdown
+processingPlanesDD(app);
+app.VolumeCoilSelectionDropDown.Items = app.positions;
+app.VolumeCoilSelectionDropDown.ItemsData = 1:length(app.positions);
+app.SurfaceCoilSelectionDropDown.Items = app.positions;
+app.SurfaceCoilSelectionDropDown.ItemsData = 1:length(app.positions);
+disp('DONE');
+
+updatePostProcessingCoilDisplay(app); % update the CoilPPDisplay
+
+% Plot to the PostProcessing Tab
+updatePostProcessingCoilDisplay(app);
+
+updatePlanesForPostProcessingTab(app); % display the planes to the CrossSectionPPDisplay
+axis(app.CrossSectionPPDisplay, "equal");
+
+
 
 
 % Calculating the EFields

@@ -23,13 +23,15 @@ end
 
 % Changing the direction of the CoilPPDisplay to look perpendicular to the
 % plane that is being examined
-switch app.solvedplanes{selectedPlane}.direction
-    case 'xy'
-        view(app.CoilPPDisplay, 0, 90);
-    case 'xz'
-        view(app.CoilPPDisplay, 0, 0);
-    case 'yz'
-        view(app.CoilPPDisplay, 90, 0);
+if (~isempty(app.solvedplanes))
+    switch app.solvedplanes{selectedPlane}.direction
+        case 'xy'
+            view(app.CoilPPDisplay, 0, 90);
+        case 'xz'
+            view(app.CoilPPDisplay, 0, 0);
+        case 'yz'
+            view(app.CoilPPDisplay, 90, 0);
+    end
 end
 end
 
