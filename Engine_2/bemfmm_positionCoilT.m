@@ -3,12 +3,17 @@
 
 function coil = bemfmm_positionCoilT(coil, transMatrix)
 
-    % Reset the coil to baseline
-    coil.strcoil = coil.strcoil_base;
-    coil.coilCAD = coil.coilCAD_base;
+% Reset the coil to baseline
+coil.strcoil = coil.strcoil_base;
+coil.coilCAD = coil.coilCAD_base;
+
+
+
+
+if (strcmp(coil.Type, 'curdip'))
 
     for (i = 1:length(coil.coilCAD.P))
-        
+
         currentPoint = coil.coilCAD.P(i,:)';
         currentPoint(4) = 1;
         currentPoint = transMatrix * currentPoint;
@@ -18,52 +23,50 @@ function coil = bemfmm_positionCoilT(coil, transMatrix)
 
     end
 
-
-    if (strcmp(coil.Type, 'curdip'))
-        for i = 1:length(coil.strcoil.Pwire)
+    for i = 1:length(coil.strcoil.Pwire)
 
 
-            currentPoint = coil.strcoil.Pwire(i,:)';
-            currentPoint(4) = 1;
-            currentPoint = transMatrix * currentPoint;
-            currentPoint(4) = [];
-            currentPoint = currentPoint';
-            coil.strcoil.Pwire(i,:) = currentPoint;
+        currentPoint = coil.strcoil.Pwire(i,:)';
+        currentPoint(4) = 1;
+        currentPoint = transMatrix * currentPoint;
+        currentPoint(4) = [];
+        currentPoint = currentPoint';
+        coil.strcoil.Pwire(i,:) = currentPoint;
 
-        end
-
-    elseif (strcmp(coil.Type, 'magdip'))
-        for i = 1:length(coil.strcoil.positions)
-
-
-            currentPoint = coil.strcoil.positions(i,:)';
-            currentPoint(4) = 1;
-            currentPoint = transMatrix * currentPoint;
-            currentPoint(4) = [];
-            currentPoint = currentPoint';
-            coil.strcoil.positions(i,:) = currentPoint;
-
-            currentPoint = coil.strcoil.directivemoments(i,:)';
-            currentPoint(4) = 0;
-            currentPoint = transMatrix * currentPoint;
-            currentPoint(4) = [];
-            currentPoint = currentPoint';
-            coil.strcoil.directivemoments(i,:) = currentPoint;
-
-        end
-    else
-        error("Incorrect coil typing");
     end
 
+elseif (strcmp(coil.Type, 'magdip'))
+    for i = 1:length(coil.strcoil.positions)
 
-    defaultCenterline = [0; 0; -1];
-    rotMatrix = transMatrix(1:3, 1:3);
-    newCenterline = (rotMatrix * defaultCenterline)';
 
-    % Update metadata
-    coil.origin = [transMatrix(1, 4) transMatrix(2, 4) transMatrix(3, 4)]*1e-2;
-    coil.centerlineDirection = newCenterline;
-    coil.centerlineTheta = 'Unknown when defined via bemfmm_positionCoilT';   %Placeholder because we don't know the angle
-    coil.transformationMatrix = transMatrix;
+        currentPoint = coil.strcoil.positions(i,:)';
+        currentPoint(4) = 1;
+        currentPoint = transMatrix * currentPoint;
+        currentPoint(4) = [];
+        currentPoint = currentPoint';
+        coil.strcoil.positions(i,:) = currentPoint;
+
+        currentPoint = coil.strcoil.directivemoments(i,:)';
+        currentPoint(4) = 0;
+        currentPoint = transMatrix * currentPoint;
+        currentPoint(4) = [];
+        currentPoint = currentPoint';
+        coil.strcoil.directivemoments(i,:) = currentPoint;
+
+    end
+else
+    error("Incorrect coil typing");
+end
+
+
+defaultCenterline = [0; 0; -1];
+rotMatrix = transMatrix(1:3, 1:3);
+newCenterline = (rotMatrix * defaultCenterline)';
+
+% Update metadata
+coil.origin = [transMatrix(1, 4) transMatrix(2, 4) transMatrix(3, 4)]*1e-2;
+coil.centerlineDirection = newCenterline;
+coil.centerlineTheta = 'Unknown when defined via bemfmm_positionCoilT';   %Placeholder because we don't know the angle
+coil.transformationMatrix = transMatrix;
 
 end

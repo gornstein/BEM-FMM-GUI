@@ -49,5 +49,11 @@ t = [1 2 4; 4 3 1; ...
 tind = 0;
 strcoil.positions = positions;
 strcoil.directivemoments = directivemoments;
-save('coil', 'strcoil');
-save('coilCAD', 'P', 't', 'tind');
+
+if ((exist('app', 'var')==1) && (exist('Coil', 'dir')==7))
+    save([app.dir app.slash 'Coil' app.slash 'coil'], 'strcoil');
+    save([app.dir app.slash 'Coil' app.slash 'coilCAD'], 'P', 't', 'tind');  %   optional, slow
+else
+    save('coil', 'strcoil');
+    save('coilCAD', 'P', 't', 'tind');  %   optional, slow
+end

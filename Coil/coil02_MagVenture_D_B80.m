@@ -108,5 +108,10 @@ P(:, 1)             =           cos(alpha)*P(:, 1);
 %bemf1_graphics_coil_wire(strcoil, [0 1 0]); 
 %view(20, 20);
  
-save('coil', 'strcoil');
-save('coilCAD', 'P', 't', 'tind');  %   optional, slow
+if ((exist('app', 'var')==1) && (exist('Coil', 'dir')==7))
+    save([app.dir app.slash 'Coil' app.slash 'coil'], 'strcoil');
+    save([app.dir app.slash 'Coil' app.slash 'coilCAD'], 'P', 't', 'tind');  %   optional, slow
+else
+    save('coil', 'strcoil');
+    save('coilCAD', 'P', 't', 'tind');  %   optional, slow
+end

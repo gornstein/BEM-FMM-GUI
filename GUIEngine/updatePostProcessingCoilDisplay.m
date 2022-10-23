@@ -6,10 +6,15 @@ selectedCoil = app.VolumeCoilSelectionDropDown.Value;
 
 cla(app.CoilPPDisplay);
 
-coil.P = app.coil.P * 1e3; % scaling the points to mm
-coil.t = app.coil.t;
+if (app.isDipoleCoil)
+    coil.positions = app.coil.positions * 1e3;
+else
+    coil.P = app.coil.P * 1e3; % scaling the points to mm
+    coil.t = app.coil.t;
+end
+
 matrix = app.solvedmatrices{selectedCoil}; % building the matrix from the app
-displaycoil(app.CoilPPDisplay, coil, matrix, true, true); % displays the coil
+displaycoil(app.CoilPPDisplay, coil, matrix, true, true, app.isDipoleCoil); % displays the coil
 
 displaybrain(app, app.CoilPPDisplay); % display the brain model
 camlight(app.CoilPPDisplay); % adds a light to improve brain appearance

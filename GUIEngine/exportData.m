@@ -26,9 +26,15 @@ end
 if any(strcmp(nodeNames, 'Coil'))
     load('Coil.mat');
     load('CoilCAD.mat');
-    CoilCAD.P = P;
-    CoilCAD.t = t;
-    strcoil.tind = tind;
+
+    if (app.isDipoleCoil)
+        CoilCAD.positions = positions;
+    else
+        CoilCAD.P = P;
+        CoilCAD.t = t;
+        strcoil.tind = tind;
+    end
+    
     CoilMatrices = app.solvedmatrices;
 
     save([filepath, '\Coil.mat'], 'CoilCAD', 'strcoil');

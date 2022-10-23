@@ -61,8 +61,12 @@ end
 app.SurfaceDisplay.CLim = [low high];
 %% Display the coil
 
-coil.P = app.coil.P * 1e3; % scaling the points to mm
-coil.t = app.coil.t;
+if (app.isDipoleCoil)
+    coil.positions = app.coil.positions * 1e3; % scaling the points to mm
+else
+    coil.P = app.coil.P * 1e3; % scaling the points to mm
+    coil.t = app.coil.t;
+end
 
 matrix = app.solvedmatrices{coilidx};
 
@@ -71,7 +75,7 @@ coilField = strcmp(app.FieldVectorSwitch.Value, 'On'); % sets whether the coil's
 
 coilNormal = false;
 coilField = false;
-[coil, coilnorm, coilfield] = displaycoil(app.SurfaceDisplay, coil, matrix, coilNormal, coilField);
+[coil, coilnorm, coilfield] = displaycoil(app.SurfaceDisplay, coil, matrix, coilNormal, coilField, app.isDipoleCoil);
 
 transparency = 0.2; % 0 = fully transparent 1 is fully visable
 alpha(coil, transparency);

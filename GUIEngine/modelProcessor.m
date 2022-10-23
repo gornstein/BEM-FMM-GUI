@@ -1,7 +1,11 @@
 %   This is a mesh processor script: it computes basis triangle parameters
 %   and necessary potential integrals, and constructs a combined mesh of a
 %   multi-object structure (for example, a head or a whole body)
-function modelProcessor(app)
+
+%   saveLocation is the location that the file will be saved to and ends
+%   with a slash. The file will be saved as 'CombinedMesh.mat' within the
+%   specified folder
+function modelProcessor(saveLocation)
 % if ~isunix
 %     s = pwd; addpath(strcat(s(1:end-6), '\ChargeEngine'));
 % else
@@ -75,7 +79,7 @@ tneighbor = pad_neighbor_triangles(tneighbor);
 
 %%   Save base data
 FileName = 'CombinedMesh.mat';
-save(FileName, 'P', 't', 'normals', 'Area', 'Center', 'Indicator', 'name', 'tissue', 'cond', 'enclosingTissueIdx', 'condin', 'condout', 'contrast');
+save([saveLocation FileName], 'P', 't', 'normals', 'Area', 'Center', 'Indicator', 'name', 'tissue', 'cond', 'enclosingTissueIdx', 'condin', 'condout', 'contrast');
 ProcessBaseDataTime = toc
 
 %%   Add accurate integration for electric field/electric potential on neighbor facets
